@@ -1,0 +1,1122 @@
+---
+title: "AI-Guided Climate Risk Adaptation"
+author: "Alfa Pradana"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Daftar Isi"
+    toc-location: right
+    number-sections: true
+    theme: cosmo
+    code-fold: false
+    code-tools: true
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    df-print: paged
+    self-contained: true
+jupyter: python3
+---
+
+
+# Gambaran Umum {.unnumbered}
+
+::: {.callout-note appearance="simple"}
+## Tentang modul ini
+
+Modul pelatihan di dalam analisis ini seluruhnya menggunakan **Python** di dalam Quarto,
+dengan pendekatan **prompt-driven** — di mana GenAI/LLM digunakan sebagai mitra pemrograman.
+:::
+
+**Dataset:** TerraClim — data iklim spatio-temporal untuk wilayah Indonesia, dengan variabel
+seperti suhu, curah hujan, kelembaban, dan lainnya
+
+<https://climate.northwestknowledge.net/TERRACLIMATE/index_directDownloads.php>
+
+**Satuan waktu:** Bulanan (monthly)
+
+**Asumsi kunci:** Tren iklim dapat mempengaruhi risiko banjir secara signifikan, terutama
+melalui variabel suhu dan curah hujan
+
+## Tujuan pembelajaran {.unnumbered}
+
+Setelah menyelesaikan modul ini, peserta mampu:
+
+1. Mengeksplorasi pola insidensi dari data TerraClim
+
+## Alur kerja pelatihan {.unnumbered}
+
+# Setup Lingkungan Kerja {#sec-setup}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia.
+
+Context:
+Saya memiliki dataset iklim Indonesia dari TerraClimate.
+Dataset berisi kolom: maksimum temperature, minimum temperature, curah hujan, dan lainnya.
+
+Task:
+- Tulis sebuah cell setup yang siap digunakan di Colab: termasuk import library,
+  konfigurasi plotting dasar, dan helper untuk reproducibility.
+- Jika ada package yang belum terinstall, tunjukkan cara menjalankan instalasi di cell setup.
+
+Constraints:
+- Install dan load library ini sebagai dasar: numpy, pandas, geopandas, xarray, rioxarray,
+  rasterio, matplotlib, seaborn, scikit-learn, pmdarima, statsmodels.
+
+Verification:
+- Print library versions and a simple "ready" message.
+```
+
+```{python}
+#| label: setup
+#| warning: false
+#| code-summary: "Setup: imports & konfigurasi"
+
+# =========================
+# INSTALL REQUIRED PACKAGES
+# (jalankan sekali di terminal / Colab)
+# =========================
+# !pip install numpy pandas geopandas xarray rioxarray rasterio \
+#             matplotlib seaborn scikit-learn pmdarima statsmodels netCDF4
+
+# =========================
+# IMPORT LIBRARIES
+# =========================
+
+import warnings
+warnings.filterwarnings("ignore")
+
+import numpy  as np
+import pandas as pd
+import geopandas as gpd
+
+import xarray as xr
+import rioxarray                           # noqa: F401  — aktivasi accessor .rio
+
+import matplotlib.pyplot    as plt
+import matplotlib.colors    as mcolors
+import matplotlib.patches   as mpatches
+import matplotlib.ticker    as mticker
+import seaborn as sns
+
+from sklearn.cluster        import KMeans
+from sklearn.preprocessing  import StandardScaler
+
+import pmdarima as pm                      # auto_arima (≈ R auto.arima)
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+from statsmodels.stats.diagnostic  import acorr_ljungbox
+
+import glob, os, importlib
+
+# =========================
+# GLOBAL OPTIONS
+# =========================
+
+np.random.seed(123)
+plt.rcParams.update({
+    "figure.dpi"      : 120,
+    "figure.facecolor": "white",
+    "axes.spines.top" : False,
+    "axes.spines.right": False,
+    "font.size"       : 11,
+})
+sns.set_palette("tab10")
+
+# =========================
+# VERSION CHECK
+# =========================
+
+pkgs = {
+    "numpy"      : np,
+    "pandas"     : pd,
+    "geopandas"  : gpd,
+    "xarray"     : xr,
+    "matplotlib" : plt,
+    "seaborn"    : sns,
+    "sklearn"    : importlib.import_module("sklearn"),
+    "pmdarima"   : pm,
+    "statsmodels": importlib.import_module("statsmodels"),
+}
+
+print("Package versions:")
+for name, mod in pkgs.items():
+    ver = getattr(mod, "__version__", "?")
+    print(f"  {name:<12}: {ver}")
+
+print("\n✅ Environment is ready for TerraClimate analysis")
+```
+
+# Eksplorasi Data TerraClimate {#sec-explore}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar Python
+
+Task:
+- Load batas wilayah Indonesia menggunakan shapefile lokal (provinsi / ADM1)
+- Buat ADM0 (batas negara) dari union ADM1
+- Plot geometri wilayah administrasi dengan border berwarna gray untuk ADM1
+  dan bold untuk ADM0
+```
+
+```{python}
+#| label: load-shp
+#| code-summary: "Load shapefile batas administrasi"
+
+# =========================
+# LOAD SHAPEFILE (lokal)
+# =========================
+
+ADM1_SHP = "data/batas_provinsi/Provinsi_Kemdagri.shp"
+
+indo_adm1 = gpd.read_file(ADM1_SHP).to_crs(epsg=4326)
+indo_adm0 = indo_adm1.dissolve().reset_index(drop=True)   # union → ADM0
+
+print(f"ADM1: {len(indo_adm1)} provinsi")
+print(indo_adm1[["geometry"]].head(3))
+
+# =========================
+# PLOT BATAS ADMINISTRASI
+# =========================
+
+fig, ax = plt.subplots(figsize=(12, 5))
+
+indo_adm1.plot(ax=ax, facecolor="none", edgecolor="gray",   linewidth=0.4)
+indo_adm0.plot(ax=ax, facecolor="none", edgecolor="black",  linewidth=1.2)
+
+ax.set_title("Batas Administrasi Indonesia", fontweight="bold", fontsize=13)
+ax.set_xlabel("Longitude"); ax.set_ylabel("Latitude")
+ax.axis("equal")
+plt.tight_layout()
+plt.show()
+```
+
+
+## Data suhu
+
+```
+Task:
+- Baca data suhu maksimum dan minimum dari file NetCDF TerraClimate untuk
+  periode yang tersedia (per tahun)
+- Hitung suhu rata-rata bulanan: (tmax + tmin) / 2, konversi skala 0.1 °C
+- Hitung suhu rata-rata tahunan
+- Plot suhu rata-rata tahunan
+```
+
+```{python}
+#| label: suhu
+#| code-summary: "Load & proses data suhu"
+
+# =========================
+# 1. BACA FILE NETCDF SUHU
+# =========================
+
+tmax_files = sorted(glob.glob("data/TerraClimate_tmax_*.nc"))
+tmin_files = sorted(glob.glob("data/TerraClimate_tmin_*.nc"))
+
+print(f"tmax files: {[os.path.basename(f) for f in tmax_files]}")
+
+# Buka sebagai multi-file dataset
+ds_tmax = xr.open_mfdataset(tmax_files, combine="by_coords")
+ds_tmin = xr.open_mfdataset(tmin_files, combine="by_coords")
+
+tmax = ds_tmax["tmax"].squeeze(drop=True)   # (time, lat, lon)
+tmin = ds_tmin["tmin"].squeeze(drop=True)
+
+# =========================
+# 2. SUHU RATA-RATA BULANAN
+# =========================
+
+# TerraClimate skala 0.1 °C → bagi 10
+tavg_monthly = (tmax + tmin) / 2 / 10
+tavg_monthly.name = "tavg"
+
+# =========================
+# 3. CLIP KE WILAYAH INDONESIA
+# =========================
+
+tavg_monthly = (
+    tavg_monthly
+    .rio.set_spatial_dims(x_dim="lon", y_dim="lat")
+    .rio.write_crs("EPSG:4326")
+    .rio.clip(indo_adm0.geometry, indo_adm0.crs, drop=True, all_touched=True)
+)
+
+# =========================
+# 4. AGREGASI TAHUNAN
+# =========================
+
+tavg_annual = tavg_monthly.resample(time="YE").mean()   # mean per tahun
+
+# Rata-rata spasial per tahun
+temp_annual = (
+    tavg_annual
+    .mean(dim=["lat", "lon"])
+    .to_pandas()
+    .rename("temp_mean")
+)
+temp_annual.index = temp_annual.index.year
+temp_annual = temp_annual.reset_index().rename(columns={"time": "year"})
+
+# =========================
+# 5. PLOT TREN TAHUNAN
+# =========================
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.plot(temp_annual["year"], temp_annual["temp_mean"],
+        marker="o", color="#e74c3c", linewidth=2)
+ax.set_title("Rata-rata Suhu Tahunan Indonesia", fontweight="bold")
+ax.set_xlabel("Tahun"); ax.set_ylabel("Suhu (°C)")
+ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
+plt.tight_layout(); plt.show()
+
+print(temp_annual.to_string(index=False))
+print("\n✅ Annual temperature successfully computed")
+```
+
+```{python}
+#| label: suhu-map
+#| code-summary: "Peta rata-rata suhu keseluruhan"
+
+# Rata-rata seluruh periode
+annual_mean_temp = tavg_annual.mean(dim="time")
+
+fig, ax = plt.subplots(figsize=(12, 5))
+annual_mean_temp.plot(ax=ax, cmap="RdYlBu_r",
+                      cbar_kwargs={"label": "Suhu (°C)"})
+indo_adm1.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.3)
+indo_adm0.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.9)
+ax.set_title("Rata-rata Suhu Tahunan Indonesia", fontweight="bold")
+ax.set_xlabel("Longitude"); ax.set_ylabel("Latitude")
+plt.tight_layout(); plt.show()
+```
+
+
+## Data curah hujan
+
+```
+Task:
+Lakukan hal yang sama untuk data curah hujan
+```
+
+```{python}
+#| label: curah-hujan
+#| code-summary: "Load & proses data curah hujan"
+
+# =========================
+# 1. BACA FILE NETCDF CURAH HUJAN
+# =========================
+
+ppt_files = sorted(glob.glob("data/TerraClimate_ppt_*.nc"))
+print(f"ppt files: {[os.path.basename(f) for f in ppt_files]}")
+
+ds_ppt  = xr.open_mfdataset(ppt_files, combine="by_coords")
+ppt_raw = ds_ppt["ppt"].squeeze(drop=True)   # unit: mm/bulan
+
+# =========================
+# 2. CLIP KE INDONESIA
+# =========================
+
+ppt_monthly = (
+    ppt_raw
+    .rio.set_spatial_dims(x_dim="lon", y_dim="lat")
+    .rio.write_crs("EPSG:4326")
+    .rio.clip(indo_adm0.geometry, indo_adm0.crs, drop=True, all_touched=True)
+)
+ppt_monthly.name = "ppt"
+
+# =========================
+# 3. TOTAL TAHUNAN (sum, bukan mean)
+# =========================
+
+ppt_annual = ppt_monthly.resample(time="YE").sum()
+
+# Rata-rata spasial nasional per tahun
+ppt_annual_mean = (
+    ppt_annual
+    .mean(dim=["lat", "lon"])
+    .to_pandas()
+    .rename("precip_mm")
+)
+ppt_annual_mean.index = ppt_annual_mean.index.year
+ppt_annual_df = ppt_annual_mean.reset_index().rename(columns={"time": "year"})
+
+# =========================
+# 4. PLOT TREN TAHUNAN
+# =========================
+
+fig, ax = plt.subplots(figsize=(9, 4))
+ax.plot(ppt_annual_df["year"], ppt_annual_df["precip_mm"],
+        marker="o", color="#2980b9", linewidth=2)
+ax.set_title("Total Curah Hujan Tahunan Indonesia", fontweight="bold")
+ax.set_xlabel("Tahun"); ax.set_ylabel("Curah Hujan (mm/tahun)")
+ax.xaxis.set_major_locator(mticker.MaxNLocator(integer=True))
+plt.tight_layout(); plt.show()
+
+print(ppt_annual_df.to_string(index=False))
+print("\n✅ Annual precipitation series ready")
+```
+
+```{python}
+#| label: hujan-map
+#| code-summary: "Peta rata-rata curah hujan keseluruhan"
+
+annual_mean_ppt = ppt_annual.mean(dim="time")
+
+fig, ax = plt.subplots(figsize=(12, 5))
+annual_mean_ppt.plot(ax=ax, cmap="Blues",
+                     cbar_kwargs={"label": "Curah Hujan (mm)"})
+indo_adm1.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.3)
+indo_adm0.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.9)
+ax.set_title("Rata-rata Curah Hujan Tahunan Indonesia", fontweight="bold")
+ax.set_xlabel("Longitude"); ax.set_ylabel("Latitude")
+plt.tight_layout(); plt.show()
+```
+
+
+## Stacking peta suhu dan curah hujan
+
+```
+Task:
+- Gabungkan (stack) array suhu dan curah hujan rata-rata ke dalam satu DataFrame
+  dengan kolom koordinat (x, y) dan nilai kedua variabel (suhu, curah_hujan)
+- Siapkan untuk visualisasi bivariat
+```
+
+```{python}
+#| label: stack-raster
+#| code-summary: "Stack raster → DataFrame"
+
+# =========================
+# 1. KONVERSI KE DATAFRAME 2D
+# =========================
+
+df_suhu = (
+    annual_mean_temp
+    .to_dataframe(name="suhu")
+    .reset_index()
+    .dropna(subset=["suhu"])
+    .rename(columns={"lon": "x", "lat": "y"})
+)
+
+df_hujan = (
+    annual_mean_ppt
+    .to_dataframe(name="curah_hujan")
+    .reset_index()
+    .dropna(subset=["curah_hujan"])
+    .rename(columns={"lon": "x", "lat": "y"})
+)
+
+# =========================
+# 2. GABUNGKAN (MERGE BY KOORDINAT)
+# =========================
+
+climate_df = (
+    df_suhu[["x", "y", "suhu"]]
+    .merge(df_hujan[["x", "y", "curah_hujan"]], on=["x", "y"])
+    .dropna()
+    .reset_index(drop=True)
+)
+
+print(climate_df.head())
+print(f"\nShape: {climate_df.shape}")
+print(climate_df.describe().round(2))
+print("\n✅ Raster stack ready for bivariate visualization")
+```
+
+
+# Peta Bivariat Suhu & Curah Hujan
+
+## Analisis bivariat
+
+```
+Task:
+- Klasifikasi data suhu dan curah hujan ke dalam kelas bivariat (quantile 4×4 = 16 kelas)
+- Plot distribusi frekuensi tiap kelas bivariat
+```
+
+```{python}
+#| label: bivariate
+#| code-summary: "Klasifikasi bivariat quantile 4×4"
+
+# =========================
+# 1. FUNGSI BI_CLASS (≈ biscale::bi_class)
+# =========================
+
+def bi_class(df, x_col, y_col, dim=4, style="quantile"):
+    """Buat label kelas bivariat dari dua variabel numerik."""
+    df = df.copy()
+    if style == "quantile":
+        df["x_class"] = pd.qcut(df[x_col], dim, labels=False, duplicates="drop") + 1
+        df["y_class"] = pd.qcut(df[y_col], dim, labels=False, duplicates="drop") + 1
+    elif style == "equal":
+        df["x_class"] = pd.cut(df[x_col], dim, labels=False) + 1
+        df["y_class"] = pd.cut(df[y_col], dim, labels=False) + 1
+    df["bi_class"] = (
+        df["x_class"].astype(int).astype(str) + "-" +
+        df["y_class"].astype(int).astype(str)
+    )
+    return df
+
+climate_bi = bi_class(climate_df, x_col="suhu", y_col="curah_hujan", dim=4)
+
+# =========================
+# 2. PLOT DISTRIBUSI KELAS
+# =========================
+
+class_counts = climate_bi["bi_class"].value_counts().sort_index()
+
+fig, ax = plt.subplots(figsize=(12, 4))
+ax.bar(class_counts.index, class_counts.values, color="#3498db", alpha=0.8)
+ax.set_title("Distribusi Kelas Bivariat (Suhu × Curah Hujan)", fontweight="bold")
+ax.set_xlabel("Kelas Bivariat (Quantile 4×4)")
+ax.set_ylabel("Jumlah Observasi")
+plt.xticks(rotation=45, ha="right", fontsize=8)
+plt.tight_layout(); plt.show()
+
+print(climate_bi.head())
+```
+
+
+## Memetakan data
+
+```
+Task:
+- Buat peta bivariat dengan skema warna BlueOr (4×4 = 16 warna)
+- Overlay batas administrasi ADM1 dan ADM0
+- Buat legenda bivariat 4×4
+- Tampilkan peta dan legenda dalam satu figure
+```
+
+```{python}
+#| label: mapping
+#| code-summary: "Peta bivariat Indonesia"
+
+# =========================
+# 1. DEFINISI PALET BlueOr (16 warna untuk 4×4)
+# =========================
+
+# Interpolasi dua gradien: biru (y tinggi) dan oranye (x tinggi)
+# Kelas: x = suhu (1–4), y = curah hujan (1–4)
+# warna [y-1][x-1]
+
+def make_bivar_palette(dim=4):
+    """
+    Buat palette bivariat dim×dim dengan interpolasi Biru–Oranye.
+    Baris = y-class (curah hujan, bawah=rendah), Kolom = x-class (suhu, kiri=rendah)
+    """
+    blue   = np.array(mcolors.to_rgb("#1F78B4"))   # Biru (suhu rendah, hujan tinggi)
+    orange = np.array(mcolors.to_rgb("#FF7F00"))   # Oranye (suhu tinggi, hujan rendah)
+    white  = np.array([1.0, 1.0, 1.0])
+    brown  = np.array(mcolors.to_rgb("#8B4513"))   # Coklat (suhu tinggi, hujan tinggi)
+
+    palette = {}
+    for xi in range(1, dim + 1):            # suhu
+        for yi in range(1, dim + 1):        # curah hujan
+            tx = (xi - 1) / (dim - 1)      # 0..1
+            ty = (yi - 1) / (dim - 1)      # 0..1
+            # Interpolasi bilinear
+            color = (
+                (1 - tx) * (1 - ty) * white +
+                tx       * (1 - ty) * orange +
+                (1 - tx) * ty       * blue +
+                tx       * ty       * brown
+            )
+            palette[f"{xi}-{yi}"] = mcolors.to_hex(np.clip(color, 0, 1))
+    return palette
+
+bivar_palette = make_bivar_palette(dim=4)
+
+# =========================
+# 2. ASSIGN WARNA KE SETIAP PIKSEL
+# =========================
+
+climate_bi["color"] = climate_bi["bi_class"].map(bivar_palette).fillna("#cccccc")
+
+# =========================
+# 3. PETA BIVARIAT
+# =========================
+
+fig = plt.figure(figsize=(14, 6))
+
+# Axes utama (peta)
+ax_map = fig.add_axes([0.0, 0.0, 0.80, 1.0])
+ax_map.scatter(
+    climate_bi["x"], climate_bi["y"],
+    c=climate_bi["color"], s=0.3, linewidths=0
+)
+indo_adm1.plot(ax=ax_map, facecolor="none", edgecolor="black", linewidth=0.25)
+indo_adm0.plot(ax=ax_map, facecolor="none", edgecolor="black", linewidth=0.70)
+
+ax_map.set_title("Indonesia: Pola Suhu dan Curah Hujan",
+                 fontweight="bold", fontsize=14, pad=10)
+ax_map.set_xlabel(""); ax_map.set_ylabel("")
+ax_map.tick_params(left=False, bottom=False,
+                   labelleft=False, labelbottom=False)
+ax_map.text(0.5, -0.02,
+            "Rataan suhu dan curah hujan | Sumber: TerraClimate | Author: Alfa Pradana",
+            ha="center", fontsize=9, color="gray",
+            transform=ax_map.transAxes)
+
+# Axes legenda (sudut kiri bawah)
+dim = 4
+ax_leg = fig.add_axes([0.01, 0.04, 0.16, 0.30])
+for xi in range(1, dim + 1):
+    for yi in range(1, dim + 1):
+        col = bivar_palette.get(f"{xi}-{yi}", "#ccc")
+        ax_leg.add_patch(mpatches.Rectangle(
+            (xi - 1, yi - 1), 1, 1,
+            facecolor=col, edgecolor="white", linewidth=0.5
+        ))
+
+ax_leg.set_xlim(0, dim); ax_leg.set_ylim(0, dim)
+ax_leg.set_xlabel("Suhu →", fontsize=8, labelpad=2)
+ax_leg.set_ylabel("Curah Hujan →", fontsize=8, labelpad=2)
+ax_leg.tick_params(left=False, bottom=False,
+                   labelleft=False, labelbottom=False)
+ax_leg.set_title("Legenda", fontsize=8, pad=4)
+
+plt.savefig("bivariate_map.png", dpi=200, bbox_inches="tight")
+plt.show()
+print("\n✅ Peta bivariat berhasil dibuat")
+```
+
+
+# Klasterisasi Zona Iklim (K-Means) {#sec-kmeans}
+
+```
+Task:
+- Standardisasi variabel suhu dan curah_hujan sebelum clustering
+- Tentukan jumlah cluster optimal menggunakan Elbow Method (k = 2–10)
+- Fit K-Means dengan k optimal (n_init=25, random_state=123)
+- Ringkasan karakteristik tiap cluster
+- Peta spasial zona iklim + overlay batas administrasi
+```
+
+## Menentukan Jumlah Cluster Optimal
+
+```{python}
+#| label: kmeans-elbow
+#| code-summary: "K-Means: Elbow Method"
+
+# =========================
+# 1. STANDARDISASI FITUR
+# =========================
+
+scaler = StandardScaler()
+features = climate_df[["suhu", "curah_hujan"]].values
+features_scaled = scaler.fit_transform(features)
+
+# =========================
+# 2. ELBOW METHOD (k = 2–10)
+# =========================
+
+inertias = []
+k_range  = range(2, 11)
+
+for k in k_range:
+    km = KMeans(n_clusters=k, n_init=25, random_state=123)
+    km.fit(features_scaled)
+    inertias.append(km.inertia_)
+
+elbow_df = pd.DataFrame({"k": list(k_range), "wss": inertias})
+
+# =========================
+# 3. PLOT ELBOW
+# =========================
+
+fig, ax = plt.subplots(figsize=(8, 4))
+ax.plot(elbow_df["k"], elbow_df["wss"], marker="o", color="#2c3e50", linewidth=2)
+ax.set_title("Elbow Method — Menentukan Jumlah Cluster Optimal",
+             fontweight="bold")
+ax.set_xlabel("Jumlah Cluster (k)")
+ax.set_ylabel("Total Within-Cluster Sum of Squares (Inertia)")
+ax.set_xticks(list(k_range))
+plt.tight_layout(); plt.show()
+```
+
+## Fitting K-Means & Pemetaan Zona Iklim
+
+```{python}
+#| label: kmeans-fit
+#| code-summary: "K-Means: Fit & Visualisasi"
+
+# =========================
+# 4. FIT K-MEANS (k = 5)
+# =========================
+
+K_OPTIMAL = 5
+
+km_fit = KMeans(n_clusters=K_OPTIMAL, n_init=25, random_state=123)
+km_fit.fit(features_scaled)
+
+climate_df["cluster"] = km_fit.labels_ + 1          # label 1-based
+climate_df["cluster"] = climate_df["cluster"].astype(str)
+
+# =========================
+# 5. RINGKASAN TIAP CLUSTER
+# =========================
+
+cluster_summary = (
+    climate_df
+    .groupby("cluster")
+    .agg(
+        n_piksel     =("suhu",        "count"),
+        suhu_mean    =("suhu",        "mean"),
+        hujan_mean   =("curah_hujan", "mean"),
+    )
+    .round(2)
+    .sort_values("suhu_mean")
+    .reset_index()
+)
+print("=== Ringkasan Cluster ===")
+print(cluster_summary.to_string(index=False))
+
+# =========================
+# 6. PETA ZONA IKLIM
+# =========================
+
+SET2_COLORS = ["#66C2A5", "#FC8D62", "#8DA0CB", "#E78AC3", "#A6D854",
+               "#FFD92F", "#E5C494", "#B3B3B3", "#1B9E77", "#D95F02"]
+
+cluster_pal = {str(i+1): SET2_COLORS[i] for i in range(K_OPTIMAL)}
+climate_df["clr"] = climate_df["cluster"].map(cluster_pal)
+
+fig, ax = plt.subplots(figsize=(13, 5))
+ax.scatter(climate_df["x"], climate_df["y"],
+           c=climate_df["clr"], s=0.4, linewidths=0)
+
+indo_adm1.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.25)
+indo_adm0.plot(ax=ax, facecolor="none", edgecolor="black", linewidth=0.70)
+
+# Legend
+legend_handles = [
+    mpatches.Patch(facecolor=cluster_pal[k], label=f"Cluster {k}")
+    for k in sorted(cluster_pal.keys())
+]
+ax.legend(handles=legend_handles, title="Zona Iklim",
+          loc="lower right", fontsize=9, title_fontsize=10)
+
+ax.set_title(f"Zona Iklim Indonesia — K-Means (k={K_OPTIMAL})",
+             fontweight="bold", fontsize=13)
+ax.set_xlabel(""); ax.set_ylabel("")
+ax.tick_params(left=False, bottom=False, labelleft=False, labelbottom=False)
+ax.text(0.5, -0.03,
+        "Berdasarkan rata-rata suhu dan curah hujan | Sumber: TerraClimate",
+        ha="center", fontsize=9, color="gray", transform=ax.transAxes)
+plt.tight_layout(); plt.show()
+```
+
+## Profil Zona Iklim
+
+```{python}
+#| label: kmeans-profile
+#| code-summary: "K-Means: Scatter plot profil cluster"
+
+# Sampel 5.000 piksel agar plot cepat
+sample_df = climate_df.sample(n=5000, random_state=123)
+
+fig, ax = plt.subplots(figsize=(9, 5))
+
+for cluster_id, grp in sample_df.groupby("cluster"):
+    ax.scatter(
+        grp["suhu"], grp["curah_hujan"],
+        c=cluster_pal[cluster_id], label=f"Cluster {cluster_id}",
+        alpha=0.45, s=10, linewidths=0
+    )
+
+ax.set_title("Profil Cluster: Suhu vs Curah Hujan", fontweight="bold")
+ax.set_xlabel("Suhu Rata-rata (°C)")
+ax.set_ylabel("Curah Hujan Rata-rata (mm/tahun)")
+ax.legend(title="Cluster", fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+
+# Forecasting Iklim (ARIMA) {#sec-arima}
+
+```
+Task:
+- Ekstrak rata-rata spasial per bulan dari raster suhu dan curah hujan
+- Fit model auto_arima (SARIMA seasonal, m=12)
+- Forecast 36 bulan ke depan (2026–2028)
+- Plot hasil forecast dengan interval kepercayaan 80% dan 95%
+- Tampilkan diagnostik residual dan RMSE in-sample
+```
+
+## Ekstraksi Time Series Bulanan
+
+```{python}
+#| label: arima-ts
+#| code-summary: "ARIMA: Ekstraksi time series bulanan"
+
+# =========================
+# 1. SPATIAL MEAN PER BULAN
+# =========================
+
+temp_mean_monthly = (
+    tavg_monthly
+    .mean(dim=["lat", "lon"])
+    .to_pandas()
+    .rename("temp_mean")
+)
+
+ppt_mean_monthly = (
+    ppt_monthly
+    .mean(dim=["lat", "lon"])
+    .to_pandas()
+    .rename("precip_mm")
+)
+
+# Gabungkan ke satu DataFrame
+ts_df = pd.DataFrame({
+    "suhu"       : temp_mean_monthly.values,
+    "curah_hujan": ppt_mean_monthly.values,
+}, index=temp_mean_monthly.index)
+
+ts_df.index = pd.to_datetime(ts_df.index)
+print(ts_df.head())
+print(f"\nPeriode: {ts_df.index[0].strftime('%Y-%m')} s/d {ts_df.index[-1].strftime('%Y-%m')}")
+
+# =========================
+# 2. PLOT DATA MENTAH
+# =========================
+
+fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(11, 6), sharex=True)
+
+ax1.plot(ts_df.index, ts_df["suhu"], color="#e74c3c", linewidth=1.5)
+ax1.set_ylabel("Suhu (°C)")
+ax1.set_title("Suhu Rata-rata Bulanan Indonesia", fontweight="bold")
+
+ax2.plot(ts_df.index, ts_df["curah_hujan"], color="#2980b9", linewidth=1.5)
+ax2.set_ylabel("Curah Hujan (mm)")
+ax2.set_title("Curah Hujan Rata-rata Bulanan Indonesia", fontweight="bold")
+
+plt.tight_layout(); plt.show()
+```
+
+## Model ARIMA — Suhu
+
+```{python}
+#| label: arima-temp
+#| code-summary: "ARIMA: Model suhu"
+
+# =========================
+# 3. AUTO ARIMA — SUHU (≈ R auto.arima)
+# =========================
+
+temp_series = ts_df["suhu"].values
+
+temp_arima = pm.auto_arima(
+    temp_series,
+    seasonal    = True,
+    m           = 12,            # musiman bulanan
+    stepwise    = False,
+    n_jobs      = -1,
+    information_criterion = "aic",
+    error_action = "ignore",
+    suppress_warnings = True,
+)
+
+print("=== Model ARIMA Suhu ===")
+print(temp_arima.summary())
+
+# Akurasi in-sample
+temp_fitted  = temp_arima.predict_in_sample()
+temp_resid   = temp_series - temp_fitted
+temp_rmse    = np.sqrt(np.mean(temp_resid**2))
+temp_mae     = np.mean(np.abs(temp_resid))
+print(f"\nRMSE in-sample : {temp_rmse:.4f} °C")
+print(f"MAE  in-sample : {temp_mae:.4f} °C")
+
+# =========================
+# 4. FORECAST 36 BULAN (2026–2028)
+# =========================
+
+H = 36
+temp_fc, temp_ci = temp_arima.predict(n_periods=H, return_conf_int=True, alpha=0.05)
+temp_fc_80, _    = temp_arima.predict(n_periods=H, return_conf_int=True, alpha=0.20)
+
+last_date    = ts_df.index[-1]
+fc_index     = pd.date_range(
+    start  = last_date + pd.DateOffset(months=1),
+    periods= H, freq="MS"
+)
+
+# =========================
+# 5. PLOT FORECAST
+# =========================
+
+fig, ax = plt.subplots(figsize=(11, 5))
+
+# Data historis
+ax.plot(ts_df.index, temp_series, color="#e74c3c", linewidth=1.5,
+        label="Historis")
+# Forecast
+ax.plot(fc_index, temp_fc, color="#c0392b", linewidth=2, linestyle="--",
+        label="Forecast")
+# Interval 95%
+ax.fill_between(fc_index, temp_ci[:, 0], temp_ci[:, 1],
+                alpha=0.20, color="#e74c3c", label="CI 95%")
+# Interval 80%
+ax.fill_between(fc_index, temp_fc_80[1][:, 0], temp_fc_80[1][:, 1],
+                alpha=0.35, color="#e74c3c", label="CI 80%")
+
+ax.axvline(last_date, color="gray", linestyle=":", linewidth=1)
+ax.set_title(f"Forecast Suhu Indonesia — {temp_arima.order}/{temp_arima.seasonal_order}",
+             fontweight="bold")
+ax.set_xlabel("Tahun"); ax.set_ylabel("Suhu (°C)")
+ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+## Model ARIMA — Curah Hujan
+
+```{python}
+#| label: arima-ppt
+#| code-summary: "ARIMA: Model curah hujan"
+
+# =========================
+# 6. AUTO ARIMA — CURAH HUJAN
+# =========================
+
+ppt_series = ts_df["curah_hujan"].values
+
+ppt_arima = pm.auto_arima(
+    ppt_series,
+    seasonal    = True,
+    m           = 12,
+    stepwise    = False,
+    n_jobs      = -1,
+    information_criterion = "aic",
+    error_action = "ignore",
+    suppress_warnings = True,
+)
+
+print("=== Model ARIMA Curah Hujan ===")
+print(ppt_arima.summary())
+
+ppt_fitted  = ppt_arima.predict_in_sample()
+ppt_resid   = ppt_series - ppt_fitted
+ppt_rmse    = np.sqrt(np.mean(ppt_resid**2))
+ppt_mae     = np.mean(np.abs(ppt_resid))
+print(f"\nRMSE in-sample : {ppt_rmse:.4f} mm")
+print(f"MAE  in-sample : {ppt_mae:.4f} mm")
+
+# =========================
+# 7. FORECAST
+# =========================
+
+ppt_fc, ppt_ci    = ppt_arima.predict(n_periods=H, return_conf_int=True, alpha=0.05)
+ppt_fc_80, _      = ppt_arima.predict(n_periods=H, return_conf_int=True, alpha=0.20)
+
+fig, ax = plt.subplots(figsize=(11, 5))
+
+ax.plot(ts_df.index, ppt_series, color="#2980b9", linewidth=1.5,
+        label="Historis")
+ax.plot(fc_index, ppt_fc, color="#1a5276", linewidth=2, linestyle="--",
+        label="Forecast")
+ax.fill_between(fc_index, ppt_ci[:, 0], ppt_ci[:, 1],
+                alpha=0.20, color="#2980b9", label="CI 95%")
+ax.fill_between(fc_index, ppt_fc_80[1][:, 0], ppt_fc_80[1][:, 1],
+                alpha=0.35, color="#2980b9", label="CI 80%")
+
+ax.axvline(last_date, color="gray", linestyle=":", linewidth=1)
+ax.set_title(f"Forecast Curah Hujan Indonesia — {ppt_arima.order}/{ppt_arima.seasonal_order}",
+             fontweight="bold")
+ax.set_xlabel("Tahun"); ax.set_ylabel("Curah Hujan (mm)")
+ax.legend(fontsize=9)
+plt.tight_layout(); plt.show()
+```
+
+## Diagnostik Residual
+
+```{python}
+#| label: arima-diagnostics
+#| code-summary: "ARIMA: Diagnostik residual"
+
+# =========================
+# 8. DIAGNOSTIK RESIDUAL — SUHU
+# =========================
+
+fig, axes = plt.subplots(2, 2, figsize=(11, 6))
+fig.suptitle("Diagnostik Residual — Model ARIMA Suhu", fontweight="bold")
+
+# Residual time series
+axes[0, 0].plot(ts_df.index, temp_resid, color="#e74c3c", linewidth=1)
+axes[0, 0].axhline(0, color="black", linewidth=0.8, linestyle="--")
+axes[0, 0].set_title("Residual")
+axes[0, 0].set_ylabel("Residual (°C)")
+
+# Histogram residual
+axes[0, 1].hist(temp_resid, bins=20, color="#e74c3c", alpha=0.75,
+                edgecolor="white")
+axes[0, 1].set_title("Distribusi Residual")
+axes[0, 1].set_xlabel("Residual")
+
+# ACF
+plot_acf(temp_resid, ax=axes[1, 0], lags=24, color="#e74c3c")
+axes[1, 0].set_title("ACF Residual")
+
+# PACF
+plot_pacf(temp_resid, ax=axes[1, 1], lags=24, color="#e74c3c", method="ywm")
+axes[1, 1].set_title("PACF Residual")
+
+plt.tight_layout(); plt.show()
+
+# Uji Ljung-Box
+lb_test = acorr_ljungbox(temp_resid, lags=[12], return_df=True)
+print("Uji Ljung-Box (lag 12):")
+print(lb_test)
+```
+
+## Ringkasan Forecast
+
+```{python}
+#| label: arima-summary
+#| code-summary: "ARIMA: Tabel ringkasan forecast"
+
+# =========================
+# 9. TABEL RINGKASAN FORECAST
+# =========================
+
+temp_fc_df = pd.DataFrame({
+    "bulan"      : fc_index.strftime("%Y-%m"),
+    "prediksi"   : temp_fc.round(3),
+    "lower_80"   : temp_fc_80[1][:, 0].round(3),
+    "upper_80"   : temp_fc_80[1][:, 1].round(3),
+    "lower_95"   : temp_ci[:, 0].round(3),
+    "upper_95"   : temp_ci[:, 1].round(3),
+    "variabel"   : "Suhu (°C)"
+})
+
+ppt_fc_df = pd.DataFrame({
+    "bulan"      : fc_index.strftime("%Y-%m"),
+    "prediksi"   : ppt_fc.round(2),
+    "lower_80"   : ppt_fc_80[1][:, 0].round(2),
+    "upper_80"   : ppt_fc_80[1][:, 1].round(2),
+    "lower_95"   : ppt_ci[:, 0].round(2),
+    "upper_95"   : ppt_ci[:, 1].round(2),
+    "variabel"   : "Curah Hujan (mm)"
+})
+
+print("=== Forecast Suhu: 6 bulan pertama ===")
+print(temp_fc_df.head(6).to_string(index=False))
+
+print("\n=== Forecast Curah Hujan: 6 bulan pertama ===")
+print(ppt_fc_df.head(6).to_string(index=False))
+
+# Ringkasan akurasi
+accuracy_df = pd.DataFrame({
+    "Variabel" : ["Suhu (°C)", "Curah Hujan (mm)"],
+    "Model"    : [
+        str(temp_arima.order) + "/" + str(temp_arima.seasonal_order),
+        str(ppt_arima.order)  + "/" + str(ppt_arima.seasonal_order),
+    ],
+    "AIC"  : [round(temp_arima.aic(), 2), round(ppt_arima.aic(), 2)],
+    "RMSE" : [round(temp_rmse, 4),        round(ppt_rmse, 4)],
+    "MAE"  : [round(temp_mae, 4),         round(ppt_mae, 4)],
+})
+
+print("\n=== Ringkasan Akurasi Model ===")
+print(accuracy_df.to_string(index=False))
+
+print("\n✅ Model ARIMA selesai — forecast siap digunakan")
+```
+
+
+# Climate Risk x Data Kredit
+
+```
+Task:
+- Overlay dengan data kredit per wilayah
+```
+
+```{python}
+#| label: generate-dummy-loan
+#| eval: false
+#| code-summary: "Generate dummy loan data"
+
+# =========================
+# 1. GENERATE DUMMY LOAN DATA
+# =========================
+
+np.random.seed(123)
+n = 5000
+
+loan_df = pd.DataFrame({
+    "loan_id"    : [f"LN{i:05d}" for i in range(1, n + 1)],
+    "longitude"  : np.random.uniform(95, 141, n),
+    "latitude"   : np.random.uniform(-11, 6, n),
+    "outstanding": np.round(np.random.lognormal(mean=16, sigma=1, size=n)).astype(int),
+    "sektor"     : np.random.choice(
+        ["Agriculture", "Manufacturing", "Trade", "Services"],
+        size=n, p=[0.3, 0.2, 0.3, 0.2]
+    ),
+    "tenor_bulan": np.random.choice([12, 24, 36, 60], size=n),
+    "pd"         : np.round(np.random.uniform(0.01, 0.15, n), 3),
+})
+
+print(loan_df.head())
+print(loan_df["outstanding"].describe())
+```
+
+```{python}
+#| label: climate-x-credit
+#| eval: false
+#| code-summary: "Overlay iklim × data kredit"
+
+# =========================
+# 2. KONVERSI KE GEODATAFRAME
+# =========================
+
+loan_gdf = gpd.GeoDataFrame(
+    loan_df,
+    geometry=gpd.points_from_xy(loan_df["longitude"], loan_df["latitude"]),
+    crs="EPSG:4326"
+)
+
+# =========================
+# 3. EXTRACT KELAS BIVARIAT KE TITIK KREDIT
+# =========================
+
+# Buat GeoDataFrame dari climate_bi dengan grid raster
+climate_gdf = gpd.GeoDataFrame(
+    climate_bi,
+    geometry=gpd.points_from_xy(climate_bi["x"], climate_bi["y"]),
+    crs="EPSG:4326"
+)
+
+# Nearest-neighbor join: titik kredit → kelas iklim terdekat
+loan_climate = gpd.sjoin_nearest(
+    loan_gdf, climate_gdf[["bi_class", "geometry"]],
+    how="left", max_distance=0.5
+)
+
+loan_gdf["bi_class"] = loan_climate["bi_class"].values
+
+# =========================
+# 4. AGREGASI EXPOSURE PER KELAS IKLIM
+# =========================
+
+exposure_by_class = (
+    loan_gdf.groupby("bi_class")
+    .agg(
+        total_outstanding=("outstanding", "sum"),
+        n_debitur        =("loan_id",     "count"),
+    )
+    .reset_index()
+    .sort_values("total_outstanding", ascending=False)
+)
+
+total_portfolio = exposure_by_class["total_outstanding"].sum()
+exposure_by_class["pct_exposure"] = (
+    exposure_by_class["total_outstanding"] / total_portfolio * 100
+).round(2)
+
+print(exposure_by_class)
+print("\n✅ Climate risk exposure successfully computed")
+```

@@ -1,0 +1,1145 @@
+---
+title: "AI-Guided Climate Risk Adaptation"
+author: "Alfa Pradana"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-title: "Daftar Isi"
+    toc-location: right
+    number-sections: true
+    theme: cosmo
+    code-fold: false
+    code-tools: true
+    highlight-style: github
+    fig-width: 8
+    fig-height: 5
+    df-print: paged
+    self-contained: true
+---
+
+
+# Gambaran Umum {.unnumbered}
+
+::: {.callout-note appearance="simple"}
+## Tentang modul ini
+
+Modul pelatihan di dalam analisis ini seluruhnya menggunakan **R** di dalam Quarto, dengan pendekatan **prompt-driven** — di mana GenAI/LLM digunakan sebagai mitra pemrograman.
+:::
+
+**Dataset:** TerraClim — data iklim spatio-temporal untuk wilayah Indonesia, dengan variabel seperti suhu, curah hujan, kelembaban, dan lainnya
+
+https://climate.northwestknowledge.net/TERRACLIMATE/index_directDownloads.php
+
+**Satuan waktu:** Bulanan (monthly)
+
+**Asumsi kunci:** Tren iklim dapat mempengaruhi risiko banjir secara signifikan, terutama melalui variabel suhu dan curah hujan
+
+## Tujuan pembelajaran {.unnumbered}
+
+Setelah menyelesaikan modul ini, peserta mampu:
+
+1. Mengeksplorasi pola insidensi dari data TerraClim
+
+
+## Alur kerja pelatihan {.unnumbered}
+
+# Setup Lingkungan Kerja {#sec-setup}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia.
+
+Context:
+Saya memiliki dataset iklim Indonesia dari TerraClimate https://www.climatologylab.org/terraclimate.html.
+Dataset berisi kolom: maksimum temperature, minimum temperature, curah hujan, kelembaban, dan lainnya.
+
+Task:
+- Tulis sebuah cell setup yang siap digunakan di Colab: termasuk import library, konfigurasi plotting dasar, dan helper untuk reproducibility.
+- Jika ada package yang belum terinstall, tunjukkan cara menjalankan installasi package tersebut di dalam cell setup.
+
+Constraints:
+- Install dan load library ini sebagai dasar untuk data retrieval, processing, dan visualisasi: `tidyverse`, `sf`, `terra`, `wmgeolab/rgeoboundaries`, `ggplot2`, `mikejohnson51/AOI`, `mikejohnson51/climateR`, `biscale`.
+
+Verification:
+- Print library versions and a simple "ready" message.
+```
+
+```{r}
+#| label: setup
+#| warnings: false
+#| message: false
+#| code-summary: "Setup: imports & konfigurasi"
+
+# =========================
+# SYSTEM DEPENDENCIES (COLAB)
+# =========================
+# Uncomment jika terjadi error pada sf/terra
+# system("apt-get update")
+# system("apt-get install -y libgdal-dev libgeos-dev libproj-dev")
+
+# =========================
+# INSTALL REQUIRED PACKAGES
+# =========================
+
+cran_packages <- c(
+  "tidyverse",
+  "sf",
+  "terra",
+  "biscale",
+  "ggplot2",
+  "cowplot",
+  "remotes"   # needed for GitHub installs
+)
+
+installed_packages <- rownames(installed.packages())
+
+# Install CRAN packages
+for (pkg in cran_packages) {
+  if (!(pkg %in% installed_packages)) {
+    install.packages(pkg, repos = "https://cloud.r-project.org")
+  }
+}
+
+# =========================
+# INSTALL PACKAGES FROM GITHUB
+# =========================
+
+# Refresh installed list (important after CRAN installs)
+installed_packages <- rownames(installed.packages())
+
+# rgeoboundaries
+if (!("rgeoboundaries" %in% installed_packages)) {
+  remotes::install_github("wmgeolab/rgeoboundaries")
+}
+
+# climateR (from BlueGreen-Labs)
+if (!("climateR" %in% installed_packages)) {
+  remotes::install_github("mikejohnson51/AOI")
+  remotes::install_github("mikejohnson51/climateR")
+}
+
+# =========================
+# LOAD LIBRARIES
+# =========================
+
+library(tidyverse)
+library(sf)
+library(terra)
+library(ggplot2)
+library(biscale)
+library(rgeoboundaries)
+library(climateR)
+
+# =========================
+# GLOBAL OPTIONS & THEMES
+# =========================
+
+# Reproducibility
+set.seed(123)
+
+options(
+  scipen = 999,
+  digits = 4
+)
+
+theme_set(
+  theme_minimal(base_size = 12) +
+    theme(
+      plot.title = element_text(face = "bold"),
+      legend.position = "bottom"
+    )
+)
+
+# =========================
+# HELPER FUNCTIONS
+# =========================
+
+# NA summary
+na_summary <- function(df) {
+  df %>%
+    summarise(across(everything(), ~sum(is.na(.)))) %>%
+    pivot_longer(cols = everything(),
+                 names_to = "variable",
+                 values_to = "na_count") %>%
+    arrange(desc(na_count))
+}
+
+# Raster plot helper
+plot_raster <- function(r, title = "Raster Plot") {
+  plot(r, main = title)
+}
+
+# =========================
+# PERFORMANCE SETTINGS
+# =========================
+
+terraOptions(progress = 1, memfrac = 0.8)
+
+# =========================
+# VERSION CHECK
+# =========================
+
+all_packages <- c(cran_packages, "rgeoboundaries", "climateR")
+
+cat("Package versions:\n")
+for (pkg in all_packages) {
+  cat(pkg, ":", as.character(packageVersion(pkg)), "\n")
+}
+
+cat("\n✅ Environment is ready for TerraClimate analysis\n")
+```
+
+# Eksplorasi Data TerraClimate {#sec-explore}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+Task:
+- Tulis sebuah cell setup yang siap digunakan di Colab:
+  - Load batas wilayah Indonesia pada level country (administrasi level 0) menggunakan geoboundaries
+  - Load batas wilayah Indonesia pada level provinsi (administrasi level 1)
+  - plot geometri wilayah administrasi level 1 dengan border berwarna gray
+  - tambahkan batas wilayah administrasi level 0 ke plot existing dengan bold
+```
+
+```{r read shp kemendagri}
+# baca shapefile data dengan terra
+indo_kemendagri <- vect("D:/My_Course/UR-SCAPE/Batas Provinsi/Provinsi_Kemdagri.shp")
+plot(indo_kemendagri)
+```
+
+```{r load data}
+# =========================
+# LOAD DATA (geoBoundaries)
+# =========================
+
+# Admin level 0 (country)
+indo_adm0 <- geoboundaries(
+  country = "Indonesia",
+  adm_lvl = "ADM0"
+)
+
+# Admin level 1 (provinsi)
+indo_adm1 <- geoboundaries(
+  country = "Indonesia",
+  adm_lvl = "ADM1"
+)
+
+# =========================
+# ENSURE CRS CONSISTENCY
+# =========================
+indo_adm0 <- st_transform(indo_adm0, 4326)
+indo_adm1 <- st_transform(indo_adm1, 4326)
+
+# =========================
+# PLOT
+# =========================
+
+ggplot() +
+  # Layer provinsi (ADM1)
+  geom_sf(data = indo_adm1,
+          fill = NA,
+          color = "gray",
+          size = 0.3) +
+  
+  # Overlay batas negara (ADM0) - bold
+  geom_sf(data = indo_adm0,
+          fill = NA,
+          color = "black",
+          size = 1.0) +
+  
+  labs(
+    title = "Batas Administrasi Indonesia",
+    subtitle = "Provinsi (ADM1) dengan overlay batas negara (ADM0)"
+  ) +
+  
+  theme_minimal()
+```
+
+
+
+## Data suhu
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+Task:
+- Tulis sebuah cell setup yang siap digunakan di Colab:
+  - baca data suhu maksimum dan minimun dari dataset TerraClimate yang sudahd diunduh untuk periode tahun 2015-2025 dengan AOI wilayah administratif Indonesia level 0 
+  - Hitung suhu rata-rata bulanan dengan menjumlahkan suhu maksimum dan minimum 
+  - Hitung suhu rata-rata tahunan dengan menjumlahkan rata-rata bulanan dari semua bulan 
+  - Plot suhu rata-rata tahunan
+```
+
+```{r suhu}
+# Convert to terra format
+indo_vect <- vect(indo_adm0)
+
+# =========================
+# READ NETCDF FILES
+# =========================
+
+# Adjust path sesuai lokasi file kamu
+tmax_files <- list.files("data/", pattern = "tmax.*\\.nc$", full.names = TRUE)
+tmin_files <- list.files("data/", pattern = "tmin.*\\.nc$", full.names = TRUE)
+
+# Load sebagai SpatRaster (multi-layer)
+tmax_r <- rast(tmax_files)
+tmin_r <- rast(tmin_files)
+
+# =========================
+# CROP & MASK TO INDONESIA
+# =========================
+tmax_r <- crop(tmax_r, indo_vect) |> mask(indo_vect)
+tmin_r <- crop(tmin_r, indo_vect) |> mask(indo_vect)
+
+# =========================
+# HITUNG SUHU RATA-RATA BULANAN
+# =========================
+
+# (tmax + tmin) / 2
+tavg_monthly <- (tmax_r + tmin_r) / 2
+
+# TerraClimate biasanya skala 0.1°C
+tavg_monthly <- tavg_monthly / 10
+
+# =========================
+# AGREGASI KE TAHUNAN
+# =========================
+
+# Ambil waktu dari raster
+time_vals <- time(tavg_monthly)
+
+# Jika time tidak terbaca otomatis:
+if (is.null(time_vals)) {
+  time_vals <- seq(
+    as.Date("2015-01-01"),
+    by = "month",
+    length.out = nlyr(tavg_monthly)
+  )
+}
+
+years <- format(time_vals, "%Y")
+
+tavg_annual <- tapp(tavg_monthly, index = years, fun = mean, na.rm = TRUE)
+names(tavg_annual) <- paste0("tavg_", unique(years))
+
+# =========================
+# SPATIAL MEAN PER TAHUN
+# =========================
+
+annual_df <- as.data.frame(global(tavg_annual, fun = mean, na.rm = TRUE))
+annual_df$year <- as.numeric(unique(years))
+colnames(annual_df)[1] <- "temp_mean"
+
+# =========================
+# PLOT
+# =========================
+
+ggplot(annual_df, aes(x = year, y = temp_mean)) +
+  geom_line(size = 1) +
+  geom_point() +
+  labs(
+    title = "Rata-rata Suhu Tahunan Indonesia (2015–2025)",
+    x = "Tahun",
+    y = "Suhu (°C)"
+  ) +
+  theme_minimal()
+
+# =========================
+# CHECK
+# =========================
+
+print(head(annual_df))
+cat("\n✅ Annual temperature (from NetCDF) successfully computed\n")
+
+```
+
+
+```{r}
+annual_mean_temp <- mean(tavg_annual, na.rm = TRUE)
+plot(annual_mean_temp)
+```
+
+
+## Data curah hujan
+
+
+```
+Task:
+Lakukan hal yang sama untuk data curah hujan
+```
+
+```{r curah hujan}
+# =========================
+# 2. READ NETCDF DATA (PRECIPITATION)
+# =========================
+# Ganti path sesuai file Anda
+ppt_files <- list.files("data/", pattern = "ppt.*\\.nc$", full.names = TRUE)
+
+ppt_r <- rast(ppt_files)
+
+# =========================
+# 3. CROP & MASK KE INDONESIA
+# =========================
+ppt_r <- crop(ppt_r, indo_vect) |> mask(indo_vect)
+
+# =========================
+# 4. CURAH HUJAN BULANAN
+# =========================
+# TerraClimate pr sudah dalam mm/bulan → tidak perlu transformasi
+ppt_monthly <- ppt_r
+
+# =========================
+# 5. AGREGASI KE TOTAL TAHUNAN
+# =========================
+
+# Ambil waktu
+time_vals <- time(ppt_monthly)
+
+# Jika tidak tersedia
+if (is.null(time_vals)) {
+  time_vals <- seq(
+    as.Date("2015-01-01"),
+    by = "month",
+    length.out = nlyr(ppt_monthly)
+  )
+}
+
+years <- format(time_vals, "%Y")
+
+# Total tahunan (sum, bukan mean)
+ppt_annual <- tapp(
+  ppt_monthly,
+  index = years,
+  fun = sum,
+  na.rm = TRUE
+)
+
+names(ppt_annual) <- paste0("ppt_", unique(years))
+
+# =========================
+# 6. SPATIAL MEAN PER TAHUN
+# =========================
+annual_df <- as.data.frame(
+  global(ppt_annual, fun = mean, na.rm = TRUE)
+)
+
+annual_df$year <- as.numeric(unique(years))
+colnames(annual_df)[1] <- "precip_mm"
+
+# =========================
+# 7. PLOT
+# =========================
+ggplot(annual_df, aes(x = year, y = precip_mm)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 2) +
+  labs(
+    title = "Total Curah Hujan Tahunan Indonesia (2015–2025)",
+    x = "Tahun",
+    y = "Curah Hujan (mm/tahun)"
+  ) +
+  theme_minimal()
+
+# =========================
+# CHECK
+# =========================
+print(annual_df)
+cat("\n✅ Annual precipitation series ready\n")
+
+```
+
+
+```{r}
+annual_mean_ppt <- mean(ppt_annual, na.rm = TRUE)
+plot(annual_mean_ppt)
+```
+
+
+## Stacking peta suhu dan curah hujan
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+Context:
+- Data SpatRaster sudah dimuat dengan nama `annual_mean_temp` dana `annual_mean_ppt`, masing-masing berisi rata-rata tahunan untuk suhu dan curah hujan di Indonesia.
+
+Task:
+- Setelah menghitung rata-rata tahunan untuk suhu dan curah hujan, lakukan stacking kedua raster tersebut menjadi satu single raster stack. Langkah ini memungkinkan untuk analisis pembuatan peta bivariat yang menggabungkan kedua variabel tersebut.
+- Beri nama deskriptif pada setiap lapisan raster dalam stack dengan nama `c("suhu", "curah_hujan")`
+- Konversi stack tersebut menjadi format data frame yang siap untuk visualisasi dengan ggplot2, dengan kolom untuk koordinat `(x, y)` dan nilai dari kedua variabel `(suhu, curah_hujan)`.
+```
+
+```{r stack raster}
+# =========================
+# 1. STACK RASTER
+# =========================
+# Pastikan kedua raster memiliki extent, resolusi, dan CRS yang sama
+
+# (opsional) cek kesesuaian
+stopifnot(compareGeom(annual_mean_temp, annual_mean_ppt, stopOnError = TRUE))
+
+# Stack raster
+climate_stack <- c(annual_mean_temp, annual_mean_ppt)
+
+# =========================
+# 2. RENAME LAYERS
+# =========================
+names(climate_stack) <- c("suhu", "curah_hujan")
+
+# =========================
+# 3. CONVERT TO DATA FRAME
+# =========================
+
+climate_df <- as.data.frame(
+  climate_stack,
+  xy = TRUE,        # include coordinates
+  na.rm = TRUE      # drop NA pixels
+)
+
+# =========================
+# 4. BASIC CHECK
+# =========================
+print(head(climate_df))
+str(climate_df)
+
+cat("\n✅ Raster stack ready for bivariate visualization\n")
+```
+
+
+# Peta Bivariat Suhu & Curah Hujan
+
+## Analisis bivariat
+
+```
+Context:
+Dataset structure
+- Data RasterStack sudah dimuat dengan nama `climate_stack`
+- Data tersebut sudah dikonversi ke bentuk data frame dengan nama `climate_df`, dengan struktur:
+  'data.frame':	95831 obs. of  4 variables:
+   $ x          : num  95.2 95.3 95.3 95.4 95.2 ...
+   $ y          : num  5.9 5.9 5.9 5.9 5.85 ...
+   $ suhu       : num  2.72 2.78 2.79 2.78 2.72 ...
+   $ curah_hujan: num  2619 2372 2396 2450 2618 ...
+
+Task:
+- Klasifikasi data suhu dan curah hujan ke dalam kelas bivariat menggunakan package 'biscale'
+- Gunakan fungsi `bi_class` dengan `'style = "quantile"` dimana data dibagi per kuantil, dan `'dim = 4'` untuk membuat 4 kelas untuk masing-masing variable, sehingga diperoleh 16 kategori bivariat
+- Plot sebaran kelas bivariat untuk visualisasi frekuensi tiap kelas, gunakan `count(bi_class)` lalu plot dengan ggplot2 + `geom_col()`
+```
+
+
+```{r bivariate}
+# =========================
+# 1. BIVARIATE CLASSIFICATION
+# =========================
+
+climate_bi <- bi_class(
+  climate_df,
+  x = suhu,
+  y = curah_hujan,
+  style = "quantile",
+  dim = 4
+)
+
+# =========================
+# 2. PLOT
+# =========================
+
+climate_bi %>% 
+  count(bi_class) %>%
+  ggplot(aes(x = bi_class, y = n)) +
+    geom_col() +
+    labs(
+      title = "Distribusi Kelas Bivariat (Suhu vs Curah Hujan)",
+      x = "Kelas Bivariat (Quantile 4x4)",
+      y = "Jumlah Observasi"
+    ) +
+    theme_minimal()
+```
+
+```{r}
+str(climate_bi)
+```
+
+
+## Memetakan data
+
+```
+Context:
+Dataset yang sudah tersedia:
+- `indo_adm0` dan `indo_adm1` sebagai data geometri batas wilayah Indonesia
+- Data frame dengan nama `climate_bi`, dengan struktur:
+  'data.frame':	95831 obs. of  5 variables:
+   $ x          : num  95.2 95.3 95.3 95.4 95.2 ...
+   $ y          : num  5.9 5.9 5.9 5.9 5.85 ...
+   $ suhu       : num  2.72 2.78 2.79 2.78 2.72 ...
+   $ curah_hujan: num  2619 2372 2396 2450 2618 ...
+   $ bi_class   : chr  "2-2" "3-1" "3-1" "3-1" ...
+
+Task:
+- Buat peta bivariat dengan nama `map` menggunakan ggplot2 `theme_void()` dengan spesifikasi:
+  - `geom_raster` koordinat (x, y) sebagai posisi, dan `fill` berdasarkan kelas bivariat (`bi_class`)
+  - Gunakan skema `pallet` warna `"BlueOr"`, terapkan pada fungsi `bi_scale_fill(dim = 4)`
+  - Overlay dengan `geom_sf(indo_adm1, fill=NA, linewidth = 0.20)` warna hitam 
+  - Overlay dengan `geom_sf(indo_adm0, fill=NA, linewidth = 0.40)` warna hitam 
+  - Tambahkan judul = "Indonesia: Pola Suhu dan Curah Hujan", subtitle = "Rataan suhu dan curah hujan tahun 2021-25", dan caption yang informatif, dan juga caption = "Sumber: TerraClimate | Author: Alfa Pradana"
+- Buat legenda dengan nama `legend` menggunakan fungsi `bi_legend()` dengan spesifikasi:
+  - `pal = pallet`
+  - `dim = 4`
+  - `xlab = "Suhu (\u00B0C)"`
+  - `ylab = "Curah hujan (mm)"`
+  - `size = 10`
+- Gabungkan peta dan legenda menggunakan `final_plot <- cowplot::ggdraw()` dengan spesifikasi:
+  - `map` sebagai layer utama
+  - `legend` ditempatkan di posisi `(-0.01, 0.1)` dengan ukuran `(0.26, 0.26)`
+```
+
+```{r mapping}
+# =========================
+# DEFINE PALETTE
+# =========================
+pallet <- "BlueOr"
+
+# =========================
+# 1. BASE MAP
+# =========================
+
+map <- ggplot() +
+  # Raster layer
+  geom_raster(
+    data = climate_bi,
+    aes(x = x, y = y, fill = bi_class),
+    color = NA, linewidth = 0.1, show.legend = FALSE
+  ) +
+  
+  # Bivariate color scale
+  bi_scale_fill(pal = pallet, dim = 4, flip_axes = FALSE, rotate_pal = FALSE) +
+  
+  # ADM1 (provinsi)
+  geom_sf(data = indo_adm1,
+          fill = NA,
+          color = "black",
+          linewidth = 0.20) +
+  
+  # ADM0 (negara)
+  geom_sf(data = indo_adm0,
+          fill = NA,
+          color = "black",
+          linewidth = 0.40) +
+  
+  # Labels
+  labs(
+    title = "Indonesia: Pola Suhu dan Curah Hujan",
+    subtitle = "Rataan suhu dan curah hujan tahun 2021-25",
+    caption = "Sumber: TerraClimate | Author: Alfa Pradana"
+  ) +
+  
+  theme_void(base_size = 14) +
+  theme(
+    plot.title = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    plot.caption = element_text(size = 10, face = "bold", hjust = 7)
+  )
+
+# =========================
+# 2. LEGEND
+# =========================
+
+legend <- bi_legend(
+  pal = pallet,
+  dim = 4,
+  xlab = "Suhu (\u00B0C)",
+  ylab = "Curah hujan (mm)",
+  size = 10
+)
+
+# =========================
+# 3. COMBINE MAP + LEGEND
+# =========================
+
+final_plot <- cowplot::ggdraw() +
+  cowplot::draw_plot(map, 0, 0, 1, 1) +
+  cowplot::draw_plot(legend, -0.01, 0.1, 0.26, 0.26)
+
+# =========================
+# SHOW PLOT
+# =========================
+final_plot
+```
+
+
+```{r save plot}
+#| eval: false
+ggsave("UK_Temp_PPT.png", final_plot, dpi = 400, width = 7, height = 7)
+```
+
+
+# Klasterisasi Zona Iklim (K-Means) {#sec-kmeans}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+Context:
+- Data frame `climate_df` sudah tersedia dengan kolom: x, y, suhu, curah_hujan (95.831 observasi)
+- Tujuan: mengelompokkan wilayah Indonesia ke dalam zona iklim berdasarkan kombinasi suhu dan curah hujan
+
+Task:
+- Standardisasi variabel suhu dan curah_hujan sebelum clustering
+- Tentukan jumlah cluster optimal menggunakan Elbow Method (k = 2 hingga 10)
+- Fit K-Means dengan k optimal, nstart = 25, set.seed(123)
+- Tambahkan label cluster ke climate_df
+- Buat ringkasan karakteristik tiap cluster (rata-rata suhu dan curah hujan per cluster)
+- Visualisasikan cluster sebagai peta spasial menggunakan ggplot2 + geom_raster
+
+Constraints:
+- Gunakan base R kmeans() dan purrr::map_dbl() untuk elbow method
+- Overlay batas administrasi indo_adm1 dan indo_adm0
+```
+
+## Menentukan Jumlah Cluster Optimal
+
+```{r kmeans-elbow}
+#| message: false
+#| warning: false
+#| code-summary: "K-Means: Elbow Method"
+
+library(purrr)
+
+# =========================
+# 1. STANDARDISASI FITUR
+# =========================
+
+climate_scaled <- climate_df %>%
+  mutate(
+    suhu_z        = as.numeric(scale(suhu)),
+    curah_hujan_z = as.numeric(scale(curah_hujan))
+  )
+
+features_scaled <- climate_scaled[, c("suhu_z", "curah_hujan_z")]
+
+# =========================
+# 2. ELBOW METHOD (k = 2–10)
+# =========================
+
+set.seed(123)
+
+wss <- map_dbl(2:10, function(k) {
+  km <- kmeans(features_scaled, centers = k, nstart = 25, iter.max = 100)
+  km$tot.withinss
+})
+
+elbow_df <- data.frame(k = 2:10, wss = wss)
+
+ggplot(elbow_df, aes(x = k, y = wss)) +
+  geom_line(linewidth = 1) +
+  geom_point(size = 3) +
+  scale_x_continuous(breaks = 2:10) +
+  labs(
+    title   = "Elbow Method — Menentukan Jumlah Cluster Optimal",
+    x       = "Jumlah Cluster (k)",
+    y       = "Total Within-Cluster Sum of Squares"
+  ) +
+  theme_minimal()
+```
+
+## Fitting K-Means & Pemetaan Zona Iklim
+
+```{r kmeans-fit}
+#| message: false
+#| warning: false
+#| code-summary: "K-Means: Fit & Visualisasi"
+
+# =========================
+# 3. FIT K-MEANS (k = 5)
+# =========================
+
+set.seed(123)
+k_optimal <- 5
+
+km_fit <- kmeans(features_scaled, centers = k_optimal, nstart = 25, iter.max = 100)
+
+climate_df$cluster <- as.factor(km_fit$cluster)
+
+# =========================
+# 4. RINGKASAN TIAP CLUSTER
+# =========================
+
+cluster_summary <- climate_df %>%
+  group_by(cluster) %>%
+  summarise(
+    n_piksel      = n(),
+    suhu_mean     = round(mean(suhu), 2),
+    hujan_mean    = round(mean(curah_hujan), 0),
+    .groups = "drop"
+  ) %>%
+  arrange(suhu_mean)
+
+print(cluster_summary)
+
+# =========================
+# 5. PETA ZONA IKLIM
+# =========================
+
+ggplot() +
+  geom_raster(
+    data = climate_df,
+    aes(x = x, y = y, fill = cluster)
+  ) +
+  geom_sf(data = indo_adm1, fill = NA, color = "black", linewidth = 0.20) +
+  geom_sf(data = indo_adm0, fill = NA, color = "black", linewidth = 0.40) +
+  scale_fill_brewer(palette = "Set2", name = "Zona Iklim") +
+  labs(
+    title    = "Zona Iklim Indonesia — K-Means Clustering (k = 5)",
+    subtitle = "Berdasarkan rata-rata suhu dan curah hujan (2015–2025)",
+    caption  = "Sumber: TerraClimate | Author: Alfa Pradana"
+  ) +
+  theme_void(base_size = 13) +
+  theme(
+    plot.title    = element_text(hjust = 0.5, face = "bold"),
+    plot.subtitle = element_text(hjust = 0.5),
+    legend.position = "bottom"
+  )
+```
+
+## Profil Zona Iklim
+
+```{r kmeans-profile}
+#| code-summary: "K-Means: Profil Cluster"
+
+# Scatter plot suhu vs curah hujan per cluster
+ggplot(
+  climate_df %>% slice_sample(n = 5000),   # sampel agar plot cepat
+  aes(x = suhu, y = curah_hujan, color = cluster)
+) +
+  geom_point(alpha = 0.4, size = 0.8) +
+  scale_color_brewer(palette = "Set2", name = "Cluster") +
+  labs(
+    title = "Profil Cluster: Suhu vs Curah Hujan",
+    x     = "Suhu Rata-rata (°C)",
+    y     = "Curah Hujan Rata-rata (mm/tahun)"
+  ) +
+  theme_minimal()
+```
+
+
+# Forecasting Iklim (ARIMA) {#sec-arima}
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+Context:
+- `tavg_monthly` adalah SpatRaster suhu bulanan (2015–2025, 132 layer)
+- `ppt_monthly` adalah SpatRaster curah hujan bulanan (2015–2025, 132 layer)
+- Satuan waktu: bulanan → cocok untuk ARIMA dengan seasonal component
+
+Task:
+- Ekstrak rata-rata spasial (spatial mean) per bulan dari kedua raster
+- Buat objek time series (ts) dengan frequency = 12
+- Fit model ARIMA menggunakan auto.arima() dari package `forecast`
+- Tampilkan summary model dan diagnostik residual (checkresiduals)
+- Buat forecast 36 bulan ke depan (2026–2028)
+- Plot hasil forecast dengan interval kepercayaan 80% dan 95%
+
+Constraints:
+- Install dan load package `forecast`
+- Tampilkan RMSE in-sample sebagai metrik evaluasi
+```
+
+## Ekstraksi Time Series Bulanan
+
+```{r arima-ts}
+#| message: false
+#| warning: false
+#| code-summary: "ARIMA: Ekstraksi data time series"
+
+if (!requireNamespace("forecast", quietly = TRUE)) {
+  install.packages("forecast")
+}
+library(forecast)
+
+# =========================
+# 1. SPATIAL MEAN PER BULAN
+# =========================
+
+temp_mean_monthly <- global(tavg_monthly, fun = mean, na.rm = TRUE)$mean
+ppt_mean_monthly  <- global(ppt_monthly,  fun = mean, na.rm = TRUE)$mean
+
+# =========================
+# 2. BUAT OBJEK ts
+# =========================
+
+temp_ts <- ts(temp_mean_monthly, start = c(2015, 1), frequency = 12)
+ppt_ts  <- ts(ppt_mean_monthly,  start = c(2015, 1), frequency = 12)
+
+# =========================
+# 3. PLOT DATA MENTAH
+# =========================
+
+par(mfrow = c(2, 1), mar = c(3, 4, 2, 1))
+
+plot(temp_ts,
+     main = "Suhu Rata-rata Bulanan Indonesia (2015–2025)",
+     ylab = "Suhu (°C)", xlab = "", col = "#E06C75", lwd = 1.5)
+
+plot(ppt_ts,
+     main = "Curah Hujan Rata-rata Bulanan Indonesia (2015–2025)",
+     ylab = "Curah Hujan (mm)", xlab = "", col = "#61AFEF", lwd = 1.5)
+
+par(mfrow = c(1, 1))
+```
+
+## Model ARIMA — Suhu
+
+```{r arima-temp}
+#| message: false
+#| warning: false
+#| code-summary: "ARIMA: Model suhu"
+
+# =========================
+# 4. AUTO ARIMA — SUHU
+# =========================
+
+set.seed(123)
+temp_arima <- auto.arima(
+  temp_ts,
+  seasonal      = TRUE,
+  stepwise      = FALSE,
+  approximation = FALSE
+)
+
+cat("=== Model ARIMA Suhu ===\n")
+summary(temp_arima)
+
+# Diagnostik residual
+checkresiduals(temp_arima)
+
+# =========================
+# 5. FORECAST 36 BULAN (2026–2028)
+# =========================
+
+temp_fc <- forecast(temp_arima, h = 36)
+
+autoplot(temp_fc) +
+  labs(
+    title    = "Forecast Suhu Indonesia 2026–2028",
+    subtitle = paste("Model:", temp_fc$method),
+    x        = "Tahun",
+    y        = "Suhu (°C)"
+  ) +
+  theme_minimal()
+```
+
+## Model ARIMA — Curah Hujan
+
+```{r arima-ppt}
+#| message: false
+#| warning: false
+#| code-summary: "ARIMA: Model curah hujan"
+
+# =========================
+# 6. AUTO ARIMA — CURAH HUJAN
+# =========================
+
+set.seed(123)
+ppt_arima <- auto.arima(
+  ppt_ts,
+  seasonal      = TRUE,
+  stepwise      = FALSE,
+  approximation = FALSE
+)
+
+cat("=== Model ARIMA Curah Hujan ===\n")
+summary(ppt_arima)
+
+# Diagnostik residual
+checkresiduals(ppt_arima)
+
+# =========================
+# 7. FORECAST 36 BULAN (2026–2028)
+# =========================
+
+ppt_fc <- forecast(ppt_arima, h = 36)
+
+autoplot(ppt_fc) +
+  labs(
+    title    = "Forecast Curah Hujan Indonesia 2026–2028",
+    subtitle = paste("Model:", ppt_fc$method),
+    x        = "Tahun",
+    y        = "Curah Hujan (mm)"
+  ) +
+  theme_minimal()
+```
+
+## Ringkasan Forecast
+
+```{r arima-summary}
+#| code-summary: "ARIMA: Tabel ringkasan forecast"
+
+# Konversi forecast ke data frame
+fc_to_df <- function(fc, var_name) {
+  data.frame(
+    bulan      = as.Date(time(fc$mean)),
+    prediksi   = as.numeric(fc$mean),
+    lower_80   = as.numeric(fc$lower[, "80%"]),
+    upper_80   = as.numeric(fc$upper[, "80%"]),
+    lower_95   = as.numeric(fc$lower[, "95%"]),
+    upper_95   = as.numeric(fc$upper[, "95%"]),
+    variabel   = var_name
+  )
+}
+
+temp_fc_df <- fc_to_df(temp_fc, "Suhu (°C)")
+ppt_fc_df  <- fc_to_df(ppt_fc,  "Curah Hujan (mm)")
+
+cat("=== Forecast Suhu: 6 bulan pertama ===\n")
+print(head(temp_fc_df, 6))
+
+cat("\n=== Forecast Curah Hujan: 6 bulan pertama ===\n")
+print(head(ppt_fc_df, 6))
+
+cat("\n✅ Model ARIMA selesai — forecast 2026–2028 siap digunakan\n")
+```
+
+
+# Climate Risk x Data Kredit
+
+```
+Persona:
+Kamu adalah analis risiko iklim senior di bank komersial Indonesia dan pengajar R/Python
+
+
+Task:
+- Overlay dengan data kredit per wilayah
+```
+
+```{r generate dummy loan data}
+#| eval: false
+
+set.seed(123)
+# =========================
+# 1. GENERATE DUMMY LOAN DATA
+# =========================
+
+n <- 5000  # jumlah debitur
+
+loan_df <- data.frame(
+  loan_id = paste0("LN", sprintf("%05d", 1:n)),
+  
+  # Koordinat Indonesia (approx bounding box)
+  longitude = runif(n, 95, 141),
+  latitude  = runif(n, -11, 6),
+  
+  # Nilai kredit (log-normal → realistis untuk bank)
+  outstanding = round(rlnorm(n, meanlog = 16, sdlog = 1)),
+  
+  # Tambahan variabel (opsional tapi realistis)
+  sektor = sample(
+    c("Agriculture", "Manufacturing", "Trade", "Services"),
+    n, replace = TRUE,
+    prob = c(0.3, 0.2, 0.3, 0.2)
+  ),
+  
+  tenor_bulan = sample(c(12, 24, 36, 60), n, replace = TRUE),
+  
+  pd = round(runif(n, 0.01, 0.15), 3)  # probability of default
+)
+
+# =========================
+# 2. QUICK CHECK
+# =========================
+head(loan_df)
+summary(loan_df$outstanding)
+```
+
+
+```{r climate x credit}
+#| eval: false
+# =========================
+# 1. CONVERT CREDIT DATA → SF
+# =========================
+
+loan_sf <- st_as_sf(
+  loan_df,
+  coords = c("longitude", "latitude"),
+  crs = 4326
+)
+
+# =========================
+# 4. CONVERT KEMBALI KE RASTER (SAFE WAY)
+# =========================
+
+# encode class jadi numeric
+climate_bi$bi_class_num <- as.numeric(as.factor(climate_bi$bi_class))
+
+# buat raster template dari original
+template <- climate_stack[[1]]
+
+# assign nilai ke raster
+bi_rast <- rast(template)
+values(bi_rast) <- NA
+
+# isi nilai berdasarkan index
+cell_ids <- cellFromXY(template, climate_bi[, c("x", "y")])
+values(bi_rast)[cell_ids] <- climate_bi$bi_class_num
+
+# simpan label mapping
+levels_map <- data.frame(
+  value = 1:length(unique(climate_bi$bi_class)),
+  bi_class = unique(climate_bi$bi_class)
+)
+
+levels(bi_rast) <- levels_map
+
+# =========================
+# 3. EXTRACT CLIMATE CLASS KE TITIK KREDIT
+# =========================
+
+loan_climate <- terra::extract(
+  bi_rast,
+  vect(loan_sf)
+)
+
+# Gabungkan kembali ke data kredit
+loan_sf$bi_class <- loan_climate$bi_class
+
+# =========================
+# 4. AGREGASI EXPOSURE PER KELAS
+# =========================
+
+exposure_by_class <- loan_sf |>
+  st_drop_geometry() |>
+  group_by(bi_class) |>
+  summarise(
+    total_outstanding = sum(outstanding, na.rm = TRUE),
+    n_debitur = n()
+  ) |>
+  arrange(desc(total_outstanding))
+
+# =========================
+# 5. NORMALISASI (% EXPOSURE)
+# =========================
+
+total_portfolio <- sum(exposure_by_class$total_outstanding)
+
+exposure_by_class <- exposure_by_class |>
+  mutate(
+    pct_exposure = total_outstanding / total_portfolio * 100
+  )
+
+# =========================
+# 6. CHECK
+# =========================
+
+print(exposure_by_class)
+
+cat("\n✅ Climate risk exposure successfully computed\n")
+```
+
+
