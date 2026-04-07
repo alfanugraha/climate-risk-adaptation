@@ -1,0 +1,9 @@
+.Rproj.user
+.Rhistory
+.RData
+.Rprofile
+.Ruserdata
+*.pyc
+*.Rproj
+output
+data
