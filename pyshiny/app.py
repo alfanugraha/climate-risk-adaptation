@@ -229,12 +229,26 @@ label.control-label { color: var(--tx2) !important; font-weight: 500; font-size:
 }
 .theme-toggle:hover { border-color: var(--ac); color: var(--ac); }
 
-/* ━━━ Full-page map (Jelajah Data) — height set by JS ━━━ */
+/* ━━━ Full-page map (Jelajah Data) ━━━ */
 .explore-page { position: relative; }
-.explore-page .fullmap {
-    width: 100%;
-    height: var(--map-h, calc(100vh - 62px));
-    border-radius: 0; border: none;
+
+/* Force all intermediate Shiny wrappers to stretch */
+.explore-page .fullmap,
+.explore-page .fullmap > div,
+.explore-page .fullmap > div > div {
+    width: 100% !important;
+    height: 80vh !important;
+    min-height: 80vh !important;
+    padding: 0; margin: 0; border: none;
+}
+
+/* Override Folium's hardcoded inline iframe height */
+.explore-page .fullmap iframe {
+    width: 100% !important;
+    height: 80vh !important;
+    min-height: 80vh !important;
+    border: none !important;
+    display: block;
 }
 
 /* kill padding on explore tab */
@@ -252,8 +266,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const saved = localStorage.getItem('dashboard-theme') || 'light';
     if (saved === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
     updateToggleLabel();
-    setMapHeight();
-    window.addEventListener('resize', setMapHeight);
 });
 
 function toggleTheme() {
@@ -276,21 +288,6 @@ function updateToggleLabel() {
     btn.innerHTML = isDark ? '☀️ Light' : '🌙 Dark';
 }
 
-// ── Dynamic map height based on viewport ──
-function setMapHeight() {
-    const navbar = document.querySelector('.navbar');
-    const navH = navbar ? navbar.offsetHeight : 56;
-    const vh = window.innerHeight;
-    const mapH = vh - navH;
-    document.documentElement.style.setProperty('--map-h', mapH + 'px');
-}
-
-// Re-measure after Shiny renders new content
-if (window.Shiny) {
-    document.addEventListener('shiny:value', function() {
-        setTimeout(setMapHeight, 100);
-    });
-}
 </script>
 """
 
