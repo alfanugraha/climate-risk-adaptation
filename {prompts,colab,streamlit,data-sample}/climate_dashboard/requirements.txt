@@ -1,0 +1,13 @@
+shiny>=1.0.0
+shinywidgets
+pandas
+numpy
+xarray
+netCDF4
+geopandas
+folium
+branca
+plotly
+rasterstats
+rioxarray
+scikit-learn
