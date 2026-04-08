@@ -6,4 +6,8 @@
 *.pyc
 *.Rproj
 output
+index_files
+*.parquet
+*.ipynb_checkpoints
+pyshiny/data_
 data
