@@ -70,7 +70,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7b89279ff1a6dce999919e0e67d4d9ec.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="index_files/libs/bootstrap/bootstrap-9e3ffae467580fdb927a41352e75a2e0.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="index_files/libs/bootstrap/bootstrap-1fbf936f5d115924c956bdfb76a204f2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -83,47 +83,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">AI for Climate Risk &amp; Adaptation</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">1</span> Overview</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview">Overview</a>
   <ul class="collapse">
-  <li><a href="#sebelum-sesi-dimulai" id="toc-sebelum-sesi-dimulai" class="nav-link" data-scroll-target="#sebelum-sesi-dimulai"><span class="header-section-number">1.1</span> Sebelum sesi dimulai</a></li>
-  <li><a href="#apa-itu-google-colab" id="toc-apa-itu-google-colab" class="nav-link" data-scroll-target="#apa-itu-google-colab"><span class="header-section-number">1.2</span> Apa itu Google Colab?</a></li>
-  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting"><span class="header-section-number">1.3</span> Troubleshooting</a></li>
-  <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi"><span class="header-section-number">1.4</span> Referensi</a></li>
-  <li><a href="#cara-menggunakan-notebook" id="toc-cara-menggunakan-notebook" class="nav-link" data-scroll-target="#cara-menggunakan-notebook"><span class="header-section-number">1.5</span> Cara menggunakan notebook</a></li>
+  <li><a href="#sebelum-sesi-dimulai" id="toc-sebelum-sesi-dimulai" class="nav-link" data-scroll-target="#sebelum-sesi-dimulai">Sebelum sesi dimulai</a></li>
+  <li><a href="#apa-itu-kaggle" id="toc-apa-itu-kaggle" class="nav-link" data-scroll-target="#apa-itu-kaggle">Apa itu Kaggle?</a></li>
+  <li><a href="#apa-itu-google-colab" id="toc-apa-itu-google-colab" class="nav-link" data-scroll-target="#apa-itu-google-colab">Apa itu Google Colab?</a></li>
+  <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
+  <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi">Referensi</a></li>
+  <li><a href="#cara-menggunakan-notebook" id="toc-cara-menggunakan-notebook" class="nav-link" data-scroll-target="#cara-menggunakan-notebook">Cara menggunakan notebook</a></li>
   </ul></li>
-  <li><a href="#sec-setup" id="toc-sec-setup" class="nav-link" data-scroll-target="#sec-setup"><span class="header-section-number">2</span> Setup Lingkungan Kerja</a></li>
-  <li><a href="#persiapan-data" id="toc-persiapan-data" class="nav-link" data-scroll-target="#persiapan-data"><span class="header-section-number">3</span> Persiapan Data</a>
+  <li><a href="#sec-setup" id="toc-sec-setup" class="nav-link" data-scroll-target="#sec-setup">Setup Lingkungan Kerja</a></li>
+  <li><a href="#persiapan-data" id="toc-persiapan-data" class="nav-link" data-scroll-target="#persiapan-data">Persiapan Data</a>
   <ul class="collapse">
-  <li><a href="#peta-batas-provinsi-di-indonesia" id="toc-peta-batas-provinsi-di-indonesia" class="nav-link" data-scroll-target="#peta-batas-provinsi-di-indonesia"><span class="header-section-number">3.1</span> Peta Batas Provinsi di Indonesia</a></li>
-  <li><a href="#peta-batas-kabupatenkota-di-indonesia" id="toc-peta-batas-kabupatenkota-di-indonesia" class="nav-link" data-scroll-target="#peta-batas-kabupatenkota-di-indonesia"><span class="header-section-number">3.2</span> Peta Batas Kabupaten/Kota di Indonesia</a></li>
-  <li><a href="#peta-iklim-di-indonesia" id="toc-peta-iklim-di-indonesia" class="nav-link" data-scroll-target="#peta-iklim-di-indonesia"><span class="header-section-number">3.3</span> Peta Iklim di Indonesia</a></li>
+  <li><a href="#peta-batas-provinsi-di-indonesia" id="toc-peta-batas-provinsi-di-indonesia" class="nav-link" data-scroll-target="#peta-batas-provinsi-di-indonesia">Peta Batas Provinsi di Indonesia</a></li>
+  <li><a href="#peta-batas-kabupatenkota-di-indonesia" id="toc-peta-batas-kabupatenkota-di-indonesia" class="nav-link" data-scroll-target="#peta-batas-kabupatenkota-di-indonesia">Peta Batas Kabupaten/Kota di Indonesia</a></li>
+  <li><a href="#peta-iklim-di-indonesia" id="toc-peta-iklim-di-indonesia" class="nav-link" data-scroll-target="#peta-iklim-di-indonesia">Peta Iklim di Indonesia</a></li>
   </ul></li>
-  <li><a href="#sec-explore" id="toc-sec-explore" class="nav-link" data-scroll-target="#sec-explore"><span class="header-section-number">4</span> Eksplorasi Data</a>
+  <li><a href="#sec-explore" id="toc-sec-explore" class="nav-link" data-scroll-target="#sec-explore">Eksplorasi Data</a>
   <ul class="collapse">
-  <li><a href="#data-suhu" id="toc-data-suhu" class="nav-link" data-scroll-target="#data-suhu"><span class="header-section-number">4.1</span> Data suhu</a></li>
-  <li><a href="#data-curah-hujan" id="toc-data-curah-hujan" class="nav-link" data-scroll-target="#data-curah-hujan"><span class="header-section-number">4.2</span> Data curah hujan</a></li>
-  <li><a href="#stacking-peta-suhu-dan-curah-hujan" id="toc-stacking-peta-suhu-dan-curah-hujan" class="nav-link" data-scroll-target="#stacking-peta-suhu-dan-curah-hujan"><span class="header-section-number">4.3</span> Stacking peta suhu dan curah hujan</a></li>
+  <li><a href="#data-suhu" id="toc-data-suhu" class="nav-link" data-scroll-target="#data-suhu">Data suhu</a></li>
+  <li><a href="#data-curah-hujan" id="toc-data-curah-hujan" class="nav-link" data-scroll-target="#data-curah-hujan">Data curah hujan</a></li>
+  <li><a href="#stacking-peta-suhu-dan-curah-hujan" id="toc-stacking-peta-suhu-dan-curah-hujan" class="nav-link" data-scroll-target="#stacking-peta-suhu-dan-curah-hujan">Stacking peta suhu dan curah hujan</a></li>
   </ul></li>
-  <li><a href="#peta-bivariat-suhu-curah-hujan" id="toc-peta-bivariat-suhu-curah-hujan" class="nav-link" data-scroll-target="#peta-bivariat-suhu-curah-hujan"><span class="header-section-number">5</span> Peta Bivariat Suhu &amp; Curah Hujan</a>
+  <li><a href="#peta-bivariat-suhu-curah-hujan" id="toc-peta-bivariat-suhu-curah-hujan" class="nav-link" data-scroll-target="#peta-bivariat-suhu-curah-hujan">Peta Bivariat Suhu &amp; Curah Hujan</a>
   <ul class="collapse">
-  <li><a href="#analisis-bivariat" id="toc-analisis-bivariat" class="nav-link" data-scroll-target="#analisis-bivariat"><span class="header-section-number">5.1</span> Analisis bivariat</a></li>
-  <li><a href="#memetakan-data" id="toc-memetakan-data" class="nav-link" data-scroll-target="#memetakan-data"><span class="header-section-number">5.2</span> Memetakan data</a></li>
+  <li><a href="#analisis-bivariat" id="toc-analisis-bivariat" class="nav-link" data-scroll-target="#analisis-bivariat">Analisis bivariat</a></li>
+  <li><a href="#memetakan-data" id="toc-memetakan-data" class="nav-link" data-scroll-target="#memetakan-data">Memetakan data</a></li>
   </ul></li>
-  <li><a href="#sec-kmeans" id="toc-sec-kmeans" class="nav-link" data-scroll-target="#sec-kmeans"><span class="header-section-number">6</span> Klasterisasi Zona Iklim (K-Means)</a>
+  <li><a href="#agregasi-spasial-per-wilayah-administrasi" id="toc-agregasi-spasial-per-wilayah-administrasi" class="nav-link" data-scroll-target="#agregasi-spasial-per-wilayah-administrasi">Agregasi Spasial per Wilayah Administrasi</a></li>
+  <li><a href="#skor-kredit-berbasis-risiko-iklim-banking-relevance" id="toc-skor-kredit-berbasis-risiko-iklim-banking-relevance" class="nav-link" data-scroll-target="#skor-kredit-berbasis-risiko-iklim-banking-relevance">Skor Kredit Berbasis Risiko Iklim (Banking Relevance)</a>
   <ul class="collapse">
-  <li><a href="#menentukan-jumlah-cluster-optimal" id="toc-menentukan-jumlah-cluster-optimal" class="nav-link" data-scroll-target="#menentukan-jumlah-cluster-optimal"><span class="header-section-number">6.1</span> Menentukan Jumlah Cluster Optimal</a></li>
-  <li><a href="#fitting-k-means-pemetaan-zona-iklim" id="toc-fitting-k-means-pemetaan-zona-iklim" class="nav-link" data-scroll-target="#fitting-k-means-pemetaan-zona-iklim"><span class="header-section-number">6.2</span> Fitting K-Means &amp; Pemetaan Zona Iklim</a></li>
-  <li><a href="#profil-zona-iklim" id="toc-profil-zona-iklim" class="nav-link" data-scroll-target="#profil-zona-iklim"><span class="header-section-number">6.3</span> Profil Zona Iklim</a></li>
+  <li><a href="#formula-skor-kredit-dasar-sesuai-dashboard" id="toc-formula-skor-kredit-dasar-sesuai-dashboard" class="nav-link" data-scroll-target="#formula-skor-kredit-dasar-sesuai-dashboard">Formula Skor Kredit Dasar (sesuai dashboard)</a></li>
+  <li><a href="#analisis-portfolio-kredit-bank" id="toc-analisis-portfolio-kredit-bank" class="nav-link" data-scroll-target="#analisis-portfolio-kredit-bank">Analisis Portfolio Kredit Bank</a></li>
+  <li><a href="#analisis-skenario-ngfs-network-for-greening-the-financial-system" id="toc-analisis-skenario-ngfs-network-for-greening-the-financial-system" class="nav-link" data-scroll-target="#analisis-skenario-ngfs-network-for-greening-the-financial-system">Analisis Skenario NGFS (Network for Greening the Financial System)</a></li>
+  <li><a href="#prompt-copypaste-3" id="toc-prompt-copypaste-3" class="nav-link" data-scroll-target="#prompt-copypaste-3">Prompt (copy/paste)</a></li>
   </ul></li>
-  <li><a href="#sec-arima" id="toc-sec-arima" class="nav-link" data-scroll-target="#sec-arima"><span class="header-section-number">7</span> Forecasting Iklim (ARIMA)</a>
-  <ul class="collapse">
-  <li><a href="#ekstraksi-time-series-bulanan" id="toc-ekstraksi-time-series-bulanan" class="nav-link" data-scroll-target="#ekstraksi-time-series-bulanan"><span class="header-section-number">7.1</span> Ekstraksi Time Series Bulanan</a></li>
-  <li><a href="#model-arima-suhu" id="toc-model-arima-suhu" class="nav-link" data-scroll-target="#model-arima-suhu"><span class="header-section-number">7.2</span> Model ARIMA — Suhu</a></li>
-  <li><a href="#model-arima-curah-hujan" id="toc-model-arima-curah-hujan" class="nav-link" data-scroll-target="#model-arima-curah-hujan"><span class="header-section-number">7.3</span> Model ARIMA — Curah Hujan</a></li>
-  <li><a href="#diagnostik-residual" id="toc-diagnostik-residual" class="nav-link" data-scroll-target="#diagnostik-residual"><span class="header-section-number">7.4</span> Diagnostik Residual</a></li>
-  <li><a href="#ringkasan-forecast" id="toc-ringkasan-forecast" class="nav-link" data-scroll-target="#ringkasan-forecast"><span class="header-section-number">7.5</span> Ringkasan Forecast</a></li>
-  </ul></li>
-  <li><a href="#climate-risk-x-data-kredit" id="toc-climate-risk-x-data-kredit" class="nav-link" data-scroll-target="#climate-risk-x-data-kredit"><span class="header-section-number">8</span> Climate Risk x Data Kredit</a></li>
+  <li><a href="#export-data-untuk-dashboard" id="toc-export-data-untuk-dashboard" class="nav-link" data-scroll-target="#export-data-untuk-dashboard">Export Data untuk Dashboard</a></li>
   </ul>
 </nav>
 </div>
@@ -173,7 +168,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Tautan untuk sesi ini
+<span class="screen-reader-only">Note</span>Tautan menggunakan Kaggle
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li><a href="https://raw.githubusercontent.com/alfanugraha/climate-risk-adaptation/refs/heads/main/colab/climate_risk_adaptation_ai_skeleton.ipynb" target="_blank">Notebook untuk hands on</a></li>
+<li><a href="https://raw.githubusercontent.com/alfanugraha/climate-risk-adaptation/refs/heads/main/colab/dashboard_climate_ai_deployment.ipynb" target="_blank">Notebook untuk dashboard</a></li>
+</ul>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>Tautan menggunakan Google Colab (opsional)
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -193,27 +204,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Satuan waktu: Bulanan dan Tahunan</li>
 </ul>
 <p><strong>Asumsi kunci:</strong> Tren iklim dapat mempengaruhi risiko banjir maupun panas kemarau secara signifikan, terutama melalui variabel suhu dan curah hujan</p>
-<section id="overview" class="level2" data-number="1">
-<h2 data-number="1" class="anchored" data-anchor-id="overview"><span class="header-section-number">1</span> Overview</h2>
+<section id="overview" class="level2">
+<h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>Pada akhir sesi ini, peserta akan mampu:</p>
 <ol type="1">
-<li>Menggunakan Python di dalam Google Colab</li>
+<li>Menggunakan Python di dalam KaggleGoogle Colab</li>
 <li>Membuka dan membaca data iklim ke dalam Google Colab</li>
 <li>Mengeksplorasi pola tren suhu dan curah hujan dengan grafik</li>
 <li>Memvisualisasikan pola suhu dan curah hujan secara spasial dengan peta</li>
 <li>Membuat peta bivariat untuk mengidentifikasi zona risiko iklim</li>
 </ol>
-<section id="sebelum-sesi-dimulai" class="level3" data-number="1.1">
-<h3 data-number="1.1" class="anchored" data-anchor-id="sebelum-sesi-dimulai"><span class="header-section-number">1.1</span> Sebelum sesi dimulai</h3>
+<section id="sebelum-sesi-dimulai" class="level3">
+<h3 class="anchored" data-anchor-id="sebelum-sesi-dimulai">Sebelum sesi dimulai</h3>
 <ol type="1">
-<li>Buka Colab notebook pada link di atas.</li>
+<li>Pastikan sudah membuat akun Kaggle atau Google untuk akses ke Google Colab.</li>
+<li>Buka notebook pada link di atas ke dalam lingkungan Kaggle.</li>
 <li>Download dataset pada cell notebook yang tersedia.</li>
 <li>Pastikan Python dapat mengimpor <code>numpy</code>, <code>pandas</code>, <code>geopandas</code>, <code>xarray</code>, <code>rioxarray</code>, <code>rasterio</code>, <code>matplotlib</code>.</li>
 <li>Tinjau kembali alur tiap section di bawah sehingga semua prompt yang dijalankan sesuai.</li>
 </ol>
 </section>
-<section id="apa-itu-google-colab" class="level3" data-number="1.2">
-<h3 data-number="1.2" class="anchored" data-anchor-id="apa-itu-google-colab"><span class="header-section-number">1.2</span> Apa itu Google Colab?</h3>
+<section id="apa-itu-kaggle" class="level3">
+<h3 class="anchored" data-anchor-id="apa-itu-kaggle">Apa itu Kaggle?</h3>
+<p>Kaggle adalah platform kompetisi data science yang menyediakan dataset, notebook, dan lingkungan coding berbasis browser untuk analisis data. Kaggle memungkinkan pengguna untuk:</p>
+<ol type="1">
+<li>Menjelajahi dan mengunduh dataset secara gratis</li>
+<li>Membuat dan berbagi notebook interaktif dengan komunitas data science global</li>
+<li>Berpartisipasi dalam kompetisi data science untuk mengasah keterampilan analisis dan machine learning.</li>
+</ol>
+<section id="langkah-langkah-menggunakan-kaggle" class="level4">
+<h4 class="anchored" data-anchor-id="langkah-langkah-menggunakan-kaggle">Langkah-langkah menggunakan Kaggle</h4>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide1.PNG" class="img-fluid figure-img"></p>
+<figcaption>1. Akses Kaggle dan buat akun</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide2.PNG" class="img-fluid figure-img"></p>
+<figcaption>2. Register dan verifikasi dengan Email</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide3.PNG" class="img-fluid figure-img"></p>
+<figcaption>3. Verifikasi akun di Settings</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide4.PNG" class="img-fluid figure-img"></p>
+<figcaption>4. Tingkatkan verifikasi dengan untuk menggunakan berbagai fitur Kaggle</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide5.PNG" class="img-fluid figure-img"></p>
+<figcaption>5. Memulai penggunaan Kaggle dengan import notebook</figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Slide6.PNG" class="img-fluid figure-img"></p>
+<figcaption>6. Antarmuka Kaggle</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="apa-itu-google-colab" class="level3">
+<h3 class="anchored" data-anchor-id="apa-itu-google-colab">Apa itu Google Colab?</h3>
 <p>Google Colab (singkatan dari “Colaboratory”) alat bantu gratis, lingkungan notebook berbasis browser dimana Anda dapat menjalankan kode Python secara online tanpa instalasi rumit di desktop/komputer lokal.</p>
 <p>Colab dapat membantu dalam:</p>
 <ol type="1">
@@ -240,8 +300,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="troubleshooting" class="level3" data-number="1.3">
-<h3 data-number="1.3" class="anchored" data-anchor-id="troubleshooting"><span class="header-section-number">1.3</span> Troubleshooting</h3>
+<section id="troubleshooting" class="level3">
+<h3 class="anchored" data-anchor-id="troubleshooting">Troubleshooting</h3>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -259,8 +319,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </section>
-<section id="referensi" class="level3" data-number="1.4">
-<h3 data-number="1.4" class="anchored" data-anchor-id="referensi"><span class="header-section-number">1.4</span> Referensi</h3>
+<section id="referensi" class="level3">
+<h3 class="anchored" data-anchor-id="referensi">Referensi</h3>
 <ul>
 <li><a href="https://numpy.org/doc/">NumPy documentation</a></li>
 <li><a href="https://pandas.pydata.org/docs/">Pandas documentation</a></li>
@@ -268,8 +328,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://geopandas.org/en/stable/docs.html">Geopandas documentation</a></li>
 </ul>
 </section>
-<section id="cara-menggunakan-notebook" class="level3" data-number="1.5">
-<h3 data-number="1.5" class="anchored" data-anchor-id="cara-menggunakan-notebook"><span class="header-section-number">1.5</span> Cara menggunakan notebook</h3>
+<section id="cara-menggunakan-notebook" class="level3">
+<h3 class="anchored" data-anchor-id="cara-menggunakan-notebook">Cara menggunakan notebook</h3>
 <p>Masing-masing section berisi:</p>
 <ol type="1">
 <li><strong>LLM prompt</strong> (Markdown) untuk di-copy ke LLM platform yang akan digunakan</li>
@@ -290,8 +350,8 @@ Important
 </div>
 </section>
 </section>
-<section id="sec-setup" class="level2" data-number="2">
-<h2 data-number="2" class="anchored" data-anchor-id="sec-setup"><span class="header-section-number">2</span> Setup Lingkungan Kerja</h2>
+<section id="sec-setup" class="level2">
+<h2 class="anchored" data-anchor-id="sec-setup">Setup Lingkungan Kerja</h2>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="an">Persona:</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Kamu adalah analis risiko iklim senior di bank komersial Indonesia.</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -302,146 +362,334 @@ Important
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan numpy, pandas, geopandas, xarray, rioxarray, rasterio, matplotlib, seaborn,</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  scikit-learn, netCDF4, pmdarima, statsmodels.</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Verification:</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Print versi library dan pesan sederhana bahwa library siap digunakan.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  scikit-learn, netCDF4, pmdarima, statsmodels, rasterstats.</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Wajib tambahkan: import matplotlib.patches as mpatches</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Wajib tambahkan: from matplotlib import colors as mcolors</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Wajib tambahkan: from matplotlib.colors import LinearSegmentedColormap</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>Verification:</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Print versi library dan pesan sederhana bahwa library siap digunakan.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="persiapan-data" class="level2" data-number="3">
-<h2 data-number="3" class="anchored" data-anchor-id="persiapan-data"><span class="header-section-number">3</span> Persiapan Data</h2>
-<section id="chatgpt-prompt-copypaste" class="level4" data-number="3.0.1">
-<h4 data-number="3.0.1" class="anchored" data-anchor-id="chatgpt-prompt-copypaste"><span class="header-section-number">3.0.1</span> ChatGPT Prompt (copy/paste)</h4>
+<section id="persiapan-data" class="level2">
+<h2 class="anchored" data-anchor-id="persiapan-data">Persiapan Data</h2>
+<section id="chatgpt-prompt-copypaste" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tulis sebuah cell kode python yang siap digunakan di Colab: buat folder data</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download data di <span class="co">[</span><span class="ot">/path/to/folder</span><span class="co">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="peta-batas-provinsi-di-indonesia" class="level3" data-number="3.1">
-<h3 data-number="3.1" class="anchored" data-anchor-id="peta-batas-provinsi-di-indonesia"><span class="header-section-number">3.1</span> Peta Batas Provinsi di Indonesia</h3>
+<section id="peta-batas-provinsi-di-indonesia" class="level3">
+<h3 class="anchored" data-anchor-id="peta-batas-provinsi-di-indonesia">Peta Batas Provinsi di Indonesia</h3>
 <p>Unduh dan unzip data pada cell yang sudah tersedia</p>
 </section>
-<section id="peta-batas-kabupatenkota-di-indonesia" class="level3" data-number="3.2">
-<h3 data-number="3.2" class="anchored" data-anchor-id="peta-batas-kabupatenkota-di-indonesia"><span class="header-section-number">3.2</span> Peta Batas Kabupaten/Kota di Indonesia</h3>
+<section id="peta-batas-kabupatenkota-di-indonesia" class="level3">
+<h3 class="anchored" data-anchor-id="peta-batas-kabupatenkota-di-indonesia">Peta Batas Kabupaten/Kota di Indonesia</h3>
 <p>Unduh dan unzip data pada cell yang sudah tersedia</p>
 </section>
-<section id="peta-iklim-di-indonesia" class="level3" data-number="3.3">
-<h3 data-number="3.3" class="anchored" data-anchor-id="peta-iklim-di-indonesia"><span class="header-section-number">3.3</span> Peta Iklim di Indonesia</h3>
+<section id="peta-iklim-di-indonesia" class="level3">
+<h3 class="anchored" data-anchor-id="peta-iklim-di-indonesia">Peta Iklim di Indonesia</h3>
 <p>Unduh dan unzip data pada cell yang sudah tersedia</p>
 </section>
 </section>
-<section id="sec-explore" class="level2" data-number="4">
-<h2 data-number="4" class="anchored" data-anchor-id="sec-explore"><span class="header-section-number">4</span> Eksplorasi Data</h2>
+<section id="sec-explore" class="level2">
+<h2 class="anchored" data-anchor-id="sec-explore">Eksplorasi Data</h2>
 <p>Load dataset yang sudah diunduh dan lakukan analisis data sederhana</p>
-<section id="chatgpt-prompt-copypaste-1" class="level4" data-number="4.0.1">
-<h4 data-number="4.0.1" class="anchored" data-anchor-id="chatgpt-prompt-copypaste-1"><span class="header-section-number">4.0.1</span> ChatGPT Prompt (copy/paste)</h4>
+<section id="chatgpt-prompt-copypaste-1" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-1">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load batas wilayah administrasi Indonesia menggunakan shapefile di path</span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>   /content/batas_provinsi/Provinsi_Kemdagri.shp (ADM1)</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Konversi ke EPSG:4326</span>
 <span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Buat batas nasional (ADM0) dengan metode dissolve</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Plot keduanya dalam satu peta dengan border berwarna abu-abu untuk ADM1</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>   dan bold untuk ADM0</span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Tambahkan label nama provinsi pada peta</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Tingkatkan kualitas visualisasi (warna, styling, tampilan lebih menarik)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan geopandas, dan matplotlib</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat kode tetap sederhana dan mudah dibaca</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Plot keduanya dalam satu peta dengan border berwarna abu-abu untuk ADM1 dan bold untuk ADM0</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Tambahkan label nama provinsi pada peta</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Tingkatkan kualitas visualisasi (warna, styling, tampilan lebih menarik)</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan geopandas, dan matplotlib</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat kode tetap sederhana dan mudah dibaca</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>WAJIB simpan hasil ke variabel bernama: gdf_adm1 (untuk ADM1) dan gdf_adm0 (untuk ADM0)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  Nama variabel ini akan digunakan oleh section lain, jangan diganti.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="data-suhu" class="level3" data-number="4.1">
-<h3 data-number="4.1" class="anchored" data-anchor-id="data-suhu"><span class="header-section-number">4.1</span> Data suhu</h3>
-<section id="chatgpt-prompt-copypaste-2" class="level4" data-number="4.1.1">
-<h4 data-number="4.1.1" class="anchored" data-anchor-id="chatgpt-prompt-copypaste-2"><span class="header-section-number">4.1.1</span> ChatGPT Prompt (copy/paste)</h4>
+<section id="data-suhu" class="level3">
+<h3 class="anchored" data-anchor-id="data-suhu">Data suhu</h3>
+<section id="chatgpt-prompt-copypaste-2" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-2">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Baca data suhu maksimum dan minimum dari file NetCDF TerraClimate untuk</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  periode yang tersedia (per tahun)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Hitung suhu rata-rata bulanan: (tmax + tmin) / 2, konversi skala 0.1 °C</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Hitung suhu rata-rata tahunan</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Plot suhu rata-rata tahunan</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk suhu maksimum (tmax) dan minumum (tmin) di path /content/iklim</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung suhu rata-rata bulanan</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Gunakan batas wilayah Indonesia sebagai referensi jika diperlukan</span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Hitung rata-rata suhu tahunan</span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Buat grafik tren suhu tahunan</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan xarray, rioxarray, dan matplotlib</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat kode tetap sederhana dan mudah dibaca</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Prompt (copy/paste)</p>
+<pre><code>Task:
+Plot peta rata-rata suhu tahunan secara keseluruhan</code></pre>
 </section>
 </section>
-<section id="data-curah-hujan" class="level3" data-number="4.2">
-<h3 data-number="4.2" class="anchored" data-anchor-id="data-curah-hujan"><span class="header-section-number">4.2</span> Data curah hujan</h3>
-<section id="chatgpt-prompt-copypaste-3" class="level4" data-number="4.2.1">
-<h4 data-number="4.2.1" class="anchored" data-anchor-id="chatgpt-prompt-copypaste-3"><span class="header-section-number">4.2.1</span> ChatGPT Prompt (copy/paste)</h4>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Lakukan hal yang sama untuk data curah hujan</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-</section>
-</section>
-<section id="stacking-peta-suhu-dan-curah-hujan" class="level3" data-number="4.3">
-<h3 data-number="4.3" class="anchored" data-anchor-id="stacking-peta-suhu-dan-curah-hujan"><span class="header-section-number">4.3</span> Stacking peta suhu dan curah hujan</h3>
+<section id="data-curah-hujan" class="level3">
+<h3 class="anchored" data-anchor-id="data-curah-hujan">Data curah hujan</h3>
+<section id="chatgpt-prompt-copypaste-3" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-3">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gabungkan (stack) array suhu dan curah hujan rata-rata ke dalam satu DataFrame</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  dengan kolom koordinat (x, y) dan nilai kedua variabel (suhu, curah_hujan)</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Siapkan untuk visualisasi bivariat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk curah hujan (ppt) di path /content/iklim</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Clip ke wilayah Indonesia menggunakan gdf_adm0</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Hitung total curah hujan tahunan (sum per tahun, bukan mean)</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Buat grafik tren curah hujan tahunan</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Simpan rata-rata spasial per tahun ke DataFrame bernama ppt_annual_df</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>   dengan kolom: year, precip_mm</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Simpan raster agregat tahunan ke variabel bernama ppt_annual (xarray DataArray)</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a><span class="ss">7. </span>Simpan rata-rata keseluruhan periode ke variabel bernama annual_mean_ppt</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan xarray, rioxarray, dan matplotlib</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>WAJIB gunakan variabel gdf_adm0 dari section sebelumnya</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Unit asli TerraClimate adalah mm/bulan, totalkan ke mm/tahun</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat kode sederhana dan mudah dibaca</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Plot peta secara mandiri untuk curah hujan tahunan</p>
 </section>
 </section>
-<section id="peta-bivariat-suhu-curah-hujan" class="level2" data-number="5">
-<h2 data-number="5" class="anchored" data-anchor-id="peta-bivariat-suhu-curah-hujan"><span class="header-section-number">5</span> Peta Bivariat Suhu &amp; Curah Hujan</h2>
-<section id="analisis-bivariat" class="level3" data-number="5.1">
-<h3 data-number="5.1" class="anchored" data-anchor-id="analisis-bivariat"><span class="header-section-number">5.1</span> Analisis bivariat</h3>
+<section id="stacking-peta-suhu-dan-curah-hujan" class="level3">
+<h3 class="anchored" data-anchor-id="stacking-peta-suhu-dan-curah-hujan">Stacking peta suhu dan curah hujan</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Klasifikasi data suhu dan curah hujan ke dalam kelas bivariat</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  (quantile 4×4 = 16 kelas)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Plot distribusi frekuensi tiap kelas bivariat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gabungkan (stack) array suhu dan curah hujan rata-rata ke dalam satu DataFrame</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  dengan kolom koordinat (x, y) dan nilai kedua variabel (suhu, curah_hujan)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Siapkan untuk visualisasi bivariat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="memetakan-data" class="level3" data-number="5.2">
-<h3 data-number="5.2" class="anchored" data-anchor-id="memetakan-data"><span class="header-section-number">5.2</span> Memetakan data</h3>
+</section>
+<section id="peta-bivariat-suhu-curah-hujan" class="level2">
+<h2 class="anchored" data-anchor-id="peta-bivariat-suhu-curah-hujan">Peta Bivariat Suhu &amp; Curah Hujan</h2>
+<section id="analisis-bivariat" class="level3">
+<h3 class="anchored" data-anchor-id="analisis-bivariat">Analisis bivariat</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat peta bivariat dengan skema warna BlueOr (4×4 = 16 warna)</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Overlay batas administrasi ADM1 dan ADM0</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat legenda bivariat 4×4</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tampilkan peta dan legenda dalam satu figure</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Klasifikasi data suhu dan curah hujan ke dalam kelas bivariat</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  (quantile 4×4 = 16 kelas)</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Plot distribusi frekuensi tiap kelas bivariat</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-</section>
-<section id="sec-kmeans" class="level2" data-number="6">
-<h2 data-number="6" class="anchored" data-anchor-id="sec-kmeans"><span class="header-section-number">6</span> Klasterisasi Zona Iklim (K-Means)</h2>
+<section id="memetakan-data" class="level3">
+<h3 class="anchored" data-anchor-id="memetakan-data">Memetakan data</h3>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Standardisasi variabel suhu dan curah_hujan sebelum clustering</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tentukan jumlah cluster optimal menggunakan Elbow Method (k = 2–10)</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Fit K-Means dengan k optimal (n_init=25, random_state=123)</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ringkasan karakteristik tiap cluster</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Peta spasial zona iklim + overlay batas administrasi</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="menentukan-jumlah-cluster-optimal" class="level3" data-number="6.1">
-<h3 data-number="6.1" class="anchored" data-anchor-id="menentukan-jumlah-cluster-optimal"><span class="header-section-number">6.1</span> Menentukan Jumlah Cluster Optimal</h3>
-</section>
-<section id="fitting-k-means-pemetaan-zona-iklim" class="level3" data-number="6.2">
-<h3 data-number="6.2" class="anchored" data-anchor-id="fitting-k-means-pemetaan-zona-iklim"><span class="header-section-number">6.2</span> Fitting K-Means &amp; Pemetaan Zona Iklim</h3>
-</section>
-<section id="profil-zona-iklim" class="level3" data-number="6.3">
-<h3 data-number="6.3" class="anchored" data-anchor-id="profil-zona-iklim"><span class="header-section-number">6.3</span> Profil Zona Iklim</h3>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat peta bivariat dengan skema warna BlueOr (4×4 = 16 warna)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Overlay batas administrasi menggunakan variabel gdf_adm1 dan gdf_adm0</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat legenda bivariat 4×4</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tampilkan peta dan legenda dalam satu figure</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan variabel climate_bi dari cell sebelumnya</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan gdf_adm1 untuk batas provinsi dan gdf_adm0 untuk batas nasional</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Import mcolors (from matplotlib import colors as mcolors) dan</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  mpatches (import matplotlib.patches as mpatches) di awal cell jika belum ada</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tambahkan atribusi: 'Sumber: TerraClimate'</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="sec-arima" class="level2" data-number="7">
-<h2 data-number="7" class="anchored" data-anchor-id="sec-arima"><span class="header-section-number">7</span> Forecasting Iklim (ARIMA)</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Ekstrak rata-rata spasial per bulan dari raster suhu dan curah hujan</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Fit model auto_arima (SARIMA seasonal, m=12)</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Forecast 36 bulan ke depan (2026–2028)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Plot hasil forecast dengan interval kepercayaan 80% dan 95%</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tampilkan diagnostik residual dan RMSE in-sample</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<section id="ekstraksi-time-series-bulanan" class="level3" data-number="7.1">
-<h3 data-number="7.1" class="anchored" data-anchor-id="ekstraksi-time-series-bulanan"><span class="header-section-number">7.1</span> Ekstraksi Time Series Bulanan</h3>
+<section id="agregasi-spasial-per-wilayah-administrasi" class="level2">
+<h2 class="anchored" data-anchor-id="agregasi-spasial-per-wilayah-administrasi">Agregasi Spasial per Wilayah Administrasi</h2>
+<p>Hitung statistik iklim rata-rata per kabupaten/kota dan provinsi menggunakan pendekatan <em>zonal statistics</em> — dasar dari pipeline <code>preprocess.py</code> di dashboard.</p>
+<section id="prompt-copypaste" class="level4">
+<h4 class="anchored" data-anchor-id="prompt-copypaste">Prompt (copy/paste)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="an">Persona:</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>Kamu adalah data engineer yang menyiapkan data iklim untuk sistem skoring kredit bank.</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Task:</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>Tulis kode python untuk:</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load shapefile kabupaten/kota Indonesia dari /content/batas_kabkot/</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung zonal statistics suhu rata-rata (tmax) per kabupaten dari raster xarray:</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>   gunakan annual_mean_temp (suhu) dan annual_mean_ppt (curah hujan)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Merge hasil zonal stats ke GeoDataFrame kabupaten</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Hitung juga statistik per provinsi (group by kolom provinsi)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Simpan ke DataFrame bernama df_kab (level kabupaten) dan df_prov (level provinsi)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>   dengan kolom wajib: province, kabupaten, year, tmax_annual, tmin_annual,</span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>   tmean_annual, ppt_annual, ppt_std</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Plot choropleth sederhana suhu rata-rata per kabupaten</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan geopandas dan rasterstats (pip install rasterstats)</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Konversi raster xarray ke numpy array sebelum diproses rasterstats</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tangani CRS mismatch antara raster dan shapefile</span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tambahkan kolom year dengan nilai tahun data yang digunakan</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>Output contract:</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>df_kab: DataFrame dengan kolom [province, kabupaten, year, tmax_annual,</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>  tmin_annual, tmean_annual, ppt_annual, ppt_std]</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>df_prov: DataFrame dengan kolom [province, year, tmax_annual,</span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>  tmean_annual, ppt_annual]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="model-arima-suhu" class="level3" data-number="7.2">
-<h3 data-number="7.2" class="anchored" data-anchor-id="model-arima-suhu"><span class="header-section-number">7.2</span> Model ARIMA — Suhu</h3>
 </section>
-<section id="model-arima-curah-hujan" class="level3" data-number="7.3">
-<h3 data-number="7.3" class="anchored" data-anchor-id="model-arima-curah-hujan"><span class="header-section-number">7.3</span> Model ARIMA — Curah Hujan</h3>
+<section id="skor-kredit-berbasis-risiko-iklim-banking-relevance" class="level2">
+<h2 class="anchored" data-anchor-id="skor-kredit-berbasis-risiko-iklim-banking-relevance">Skor Kredit Berbasis Risiko Iklim (Banking Relevance)</h2>
+<p>Bagian ini menghubungkan data iklim dengan praktik perbankan sesuai framework <strong>TCFD</strong> (<em>Task Force on Climate-related Financial Disclosures</em>) dan regulasi <strong>OJK SEOJK No.&nbsp;16/2021</strong> tentang Keuangan Berkelanjutan.</p>
+<section id="mengapa-bank-perlu-climate-risk-scoring" class="level4">
+<h4 class="anchored" data-anchor-id="mengapa-bank-perlu-climate-risk-scoring">Mengapa bank perlu climate risk scoring?</h4>
+<ul>
+<li><strong>Physical risk</strong> (banjir, kekeringan, suhu ekstrem) → NPL naik di daerah terdampak</li>
+<li><strong>Transition risk</strong> (carbon tax, regulasi hijau) → stranded assets sektor fosil</li>
+<li><strong>Nilai agunan</strong> properti turun akibat sea-level rise atau bencana berulang</li>
+</ul>
+<hr>
 </section>
-<section id="diagnostik-residual" class="level3" data-number="7.4">
-<h3 data-number="7.4" class="anchored" data-anchor-id="diagnostik-residual"><span class="header-section-number">7.4</span> Diagnostik Residual</h3>
+<section id="formula-skor-kredit-dasar-sesuai-dashboard" class="level3">
+<h3 class="anchored" data-anchor-id="formula-skor-kredit-dasar-sesuai-dashboard">Formula Skor Kredit Dasar (sesuai dashboard)</h3>
+<section id="prompt-copypaste-1" class="level4">
+<h4 class="anchored" data-anchor-id="prompt-copypaste-1">Prompt (copy/paste)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="an">Persona:</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>Kamu adalah quant analyst di divisi manajemen risiko bank komersial Indonesia.</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>Task:</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Tulis kode python untuk menghitung climate-adjusted credit score per kabupaten:</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Formula:</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  credit_score = 700 - 120 * norm(tmax_annual) - 80 * norm(ppt_std) + noise(σ=15)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  diclip ke range <span class="co">[</span><span class="ot">300, 850</span><span class="co">]</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>Interpretasi:</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Daerah dengan suhu maksimum tinggi: risiko lebih tinggi (kredit score turun)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Daerah dengan variabilitas curah hujan tinggi: risiko lebih tinggi (kredit score turun)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>Langkah:</span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Normalisasi tmax_annual dan ppt_std menggunakan MinMaxScaler ke <span class="co">[</span><span class="ot">0, 1</span><span class="co">]</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung credit_score menggunakan formula di atas dengan random seed = 42</span>
+<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Tambahkan kolom risk_category: Very High (&lt;550), High (550-599),</span>
+<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>   Medium (600-649), Good (650-699), Very Good (≥700)</span>
+<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Plot distribusi histogram credit score seluruh kabupaten</span>
+<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Plot top 10 kabupaten skor tertinggi dan terendah</span>
+<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a><span class="ss">6. </span>Plot scatter plot tmax_annual vs credit_score dengan warna risk_category</span>
+<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>Input: df_kab dari Section 4</span>
+<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>Output: df_kab dengan kolom tambahan credit_score dan risk_category</span>
+<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-27"><a href="#cb11-27" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb11-28"><a href="#cb11-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan sklearn.preprocessing.MinMaxScaler</span>
+<span id="cb11-29"><a href="#cb11-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Set random seed = 42</span>
+<span id="cb11-30"><a href="#cb11-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Buat visualisasi menarik dengan seaborn dan matplotlib</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
-<section id="ringkasan-forecast" class="level3" data-number="7.5">
-<h3 data-number="7.5" class="anchored" data-anchor-id="ringkasan-forecast"><span class="header-section-number">7.5</span> Ringkasan Forecast</h3>
+</section>
+<section id="analisis-portfolio-kredit-bank" class="level3">
+<h3 class="anchored" data-anchor-id="analisis-portfolio-kredit-bank">Analisis Portfolio Kredit Bank</h3>
+<section id="prompt-copypaste-2" class="level4">
+<h4 class="anchored" data-anchor-id="prompt-copypaste-2">Prompt (copy/paste)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="an">Persona:</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>Kamu adalah analis risiko kredit di bank komersial Indonesia yang menerapkan</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>framework TCFD untuk stress-testing portofolio kredit.</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>Task:</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>Tulis kode python untuk mensimulasikan portofolio kredit bank dan mengukur</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>eksposur risiko iklim:</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Generate data sintetis portofolio kredit (gunakan random seed=42):</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Merge df_kab (dari Section 5.1) dengan simulasi pinjaman per kabupaten</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Tambahkan kolom: sector (Agriculture/Manufacturing/Mining/Real Estate/Retail),</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>     outstanding_billion_idr (50–2000 miliar per kabupaten), npl_base (1-5%)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Sector climate multiplier: Agriculture=1.8, Real Estate=1.5, Mining=1.3,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>     Manufacturing=1.1, Retail=1.0</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung Physical Risk Score dan ECL (Expected Credit Loss) add-on:</span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>physical_risk = climate_risk_index * sector_multiplier</span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>npl_adjusted = npl_base * (1 + physical_risk)</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>ecl_base = outstanding * npl_base * 0.45  # LGD = 45%</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>ecl_climate_addon = outstanding * (npl_adjusted - npl_base) * 0.45</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Hitung Loan-at-Risk (LaR):</span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>LaR = total outstanding dimana climate_risk_index &gt; 0.4</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Hitung sebagai % dari total portfolio</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Buat visualisasi:</span>
+<span id="cb12-27"><a href="#cb12-27" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Bar chart ECL add-on per sektor</span>
+<span id="cb12-28"><a href="#cb12-28" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Scatter plot LaR vs rata-rata credit score per provinsi</span>
+<span id="cb12-29"><a href="#cb12-29" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Tabel ringkasan risiko 10 provinsi tertinggi</span>
+<span id="cb12-30"><a href="#cb12-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-31"><a href="#cb12-31" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Print key metrics:</span>
+<span id="cb12-32"><a href="#cb12-32" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Total ECL add-on (climate)</span>
+<span id="cb12-33"><a href="#cb12-33" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Loan-at-Risk (IDR dan %)</span>
+<span id="cb12-34"><a href="#cb12-34" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Provinsi dengan risiko tertinggi</span>
+<span id="cb12-35"><a href="#cb12-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-36"><a href="#cb12-36" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb12-37"><a href="#cb12-37" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan pandas, numpy, matplotlib, seaborn</span>
+<span id="cb12-38"><a href="#cb12-38" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Simpan ke df_portfolio (seluruh data) dan df_summary (ringkasan per provinsi)</span>
+<span id="cb12-39"><a href="#cb12-39" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Format angka dalam miliar IDR</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 </section>
-<section id="climate-risk-x-data-kredit" class="level2" data-number="8">
-<h2 data-number="8" class="anchored" data-anchor-id="climate-risk-x-data-kredit"><span class="header-section-number">8</span> Climate Risk x Data Kredit</h2>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>generate dummy data kredit dengan kolom: loan_id, longitude, latitude,</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  outstanding, sektor, tenor_bulan, pd</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Overlay dengan data kredit per wilayah</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="analisis-skenario-ngfs-network-for-greening-the-financial-system" class="level3">
+<h3 class="anchored" data-anchor-id="analisis-skenario-ngfs-network-for-greening-the-financial-system">Analisis Skenario NGFS (Network for Greening the Financial System)</h3>
+</section>
+<section id="prompt-copypaste-3" class="level3">
+<h3 class="anchored" data-anchor-id="prompt-copypaste-3">Prompt (copy/paste)</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="an">Persona:</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>Kamu adalah analis senior climate stress-testing di bank, menggunakan skenario</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>NGFS (Network for Greening the Financial System) untuk menilai dampak iklim</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>ke portofolio kredit.</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>Context:</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>NGFS mendefinisikan 4 skenario utama:</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Net Zero 2050: Transisi cepat + suhu naik 1.5°C</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>   (physical_risk_mult=0.8, transition_risk_mult=1.5, carbon_price_2030=75)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Delayed Transition: Terlambat beradaptasi + suhu naik 1.8°C</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>   (physical_risk_mult=0.9, transition_risk_mult=2.0, carbon_price_2030=100)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Current Policies: Kebijakan saat ini + suhu naik 3.0°C</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>   (physical_risk_mult=1.8, transition_risk_mult=0.8, carbon_price_2030=10)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Hot House World: Tanpa aksi + suhu naik 4.0°C</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>   (physical_risk_mult=2.5, transition_risk_mult=0.5, carbon_price_2030=5)</span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>Task:</span>
+<span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Untuk setiap skenario NGFS, hitung projected ECL dengan:</span>
+<span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>   projected_ecl = baseline_ecl * (physical_risk_mult * 0.6 + transition_risk_mult * 0.4)</span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung ECL increase (%) vs baseline</span>
+<span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Untuk sektor karbon-intensif (Mining, Energy, Manufacturing), terapkan</span>
+<span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a>   tambahan transition_risk_penalty = carbon_price_2030 * 0.001 * outstanding</span>
+<span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Buat visualisasi:</span>
+<span id="cb13-24"><a href="#cb13-24" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Bar chart perbandingan total ECL per skenario</span>
+<span id="cb13-25"><a href="#cb13-25" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Heatmap: skenario vs sektor (ECL increase %)</span>
+<span id="cb13-26"><a href="#cb13-26" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Line chart: kenaikan suhu vs ECL impact</span>
+<span id="cb13-27"><a href="#cb13-27" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>Buat tabel ringkasan executive summary untuk manajemen bank</span>
+<span id="cb13-28"><a href="#cb13-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-29"><a href="#cb13-29" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb13-30"><a href="#cb13-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Gunakan pandas, numpy, matplotlib, seaborn</span>
+<span id="cb13-31"><a href="#cb13-31" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Format tabel dengan angka jelas (miliar IDR, persentase)</span>
+<span id="cb13-32"><a href="#cb13-32" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tambahkan interpretasi singkat setiap skenario</span>
+<span id="cb13-33"><a href="#cb13-33" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Relevansi regulasi: sebutkan kaitannya dengan OJK SEOJK No.16/2021</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+</section>
+<section id="export-data-untuk-dashboard" class="level2">
+<h2 class="anchored" data-anchor-id="export-data-untuk-dashboard">Export Data untuk Dashboard</h2>
+<p>Simpan semua output ke format yang siap dibaca oleh Shiny dashboard.</p>
+<section id="prompt-copypaste-4" class="level4">
+<h4 class="anchored" data-anchor-id="prompt-copypaste-4">Prompt (copy/paste)</h4>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk menyimpan hasil analisis ke file:</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>province_climate.csv — data iklim per provinsi:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>   kolom wajib: province, year, tmax_annual, tmin_annual, tmean_annual,</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>   ppt_annual, ppt_std, tmax_max</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>   sumber: df_prov dari Section 4</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>kabupaten_data.csv — data iklim + skor kredit per kabupaten:</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>   kolom wajib: province, kabupaten, year, tmax_annual, tmin_annual,</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>   tmean_annual, ppt_annual, ppt_std, credit_score</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>   sumber: df_kab dari Section 5.1</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>province_scores.csv — agregat skor kredit per provinsi:</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>   kolom wajib: province, year, credit_score, tmax_annual, ppt_annual, tmean_annual</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>   sumber: group-by province dari df_kab</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>bank_portfolio.csv — ringkasan risiko portofolio per provinsi:</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>   kolom wajib: province, total_outstanding_bn_idr, ecl_base_bn_idr,</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>   ecl_climate_addon_bn_idr, lar_bn_idr, lar_pct, risk_category</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>   sumber: df_summary dari Section 5.2</span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a><span class="ss">5. </span>ngfs_scenarios.csv — hasil stress-test skenario NGFS:</span>
+<span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a>   kolom wajib: scenario, temp_increase_C, carbon_price_usd, projected_ecl_bn_idr,</span>
+<span id="cb14-25"><a href="#cb14-25" aria-hidden="true" tabindex="-1"></a>   ecl_increase_pct</span>
+<span id="cb14-26"><a href="#cb14-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-27"><a href="#cb14-27" aria-hidden="true" tabindex="-1"></a>Constraints:</span>
+<span id="cb14-28"><a href="#cb14-28" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Simpan ke folder /content/output/ (buat jika belum ada)</span>
+<span id="cb14-29"><a href="#cb14-29" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Verifikasi dengan print shape dan 2 baris pertama setiap file</span>
+<span id="cb14-30"><a href="#cb14-30" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tambahkan: zip semua output ke shiny-data.zip untuk mudah diunduh</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
 </section>
 
 </main>
