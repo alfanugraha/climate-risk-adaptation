@@ -90,7 +90,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#sebelum-sesi-dimulai" id="toc-sebelum-sesi-dimulai" class="nav-link" data-scroll-target="#sebelum-sesi-dimulai">Sebelum sesi dimulai</a></li>
   <li><a href="#apa-itu-kaggle" id="toc-apa-itu-kaggle" class="nav-link" data-scroll-target="#apa-itu-kaggle">Apa itu Kaggle?</a></li>
-  <li><a href="#apa-itu-google-colab-sec-colab" id="toc-apa-itu-google-colab-sec-colab" class="nav-link" data-scroll-target="#apa-itu-google-colab-sec-colab">Apa itu Google Colab? {sec-colab}</a></li>
+  <li><a href="#sec-colab" id="toc-sec-colab" class="nav-link" data-scroll-target="#sec-colab">Apa itu Google Colab?</a></li>
+  <li><a href="#apa-itu-shiny" id="toc-apa-itu-shiny" class="nav-link" data-scroll-target="#apa-itu-shiny">Apa itu Shiny?</a></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi">Referensi</a></li>
   <li><a href="#cara-menggunakan-notebook" id="toc-cara-menggunakan-notebook" class="nav-link" data-scroll-target="#cara-menggunakan-notebook">Cara menggunakan notebook</a></li>
@@ -171,7 +172,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Tautan menggunakan Kaggle
+<span class="screen-reader-only">Note</span>Tautan notebook yang akan digunakan untuk import ke Kaggle
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -194,11 +195,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
-<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/climate_risk_adaptation_ai_skeleton.ipynb" target="_blank">Google colab notebook</a></li>
-<li><a href="https://github.com/alfanugraha/climate-risk-adaptation/blob/main/climate_risk_adaptation_ai_final.ipynb" target="_blank">Source notebook</a></li>
+<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/colab/climate_risk_adaptation_ai_skeleton.ipynb" target="_blank">Google colab notebook</a></li>
+<li><a href="https://github.com/alfanugraha/climate-risk-adaptation/blob/main/colab/climate_risk_adaptation_ai_final.ipynb" target="_blank">Source notebook</a></li>
 <li>Dataset yang digunakan tercantum di dalam notebook</li>
-<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/climate_risk_adaptation_ai_final.ipynb" target="_blank">Contoh Google colab notebook final</a></li>
-<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/dashboard_climate_ai_deployment.ipynb" target="_blank">Google colab notebook dashboard</a></li>
+<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/colab/climate_risk_adaptation_ai_final.ipynb" target="_blank">Contoh Google colab notebook final</a></li>
+<li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/colab/dashboard_climate_ai_deployment.ipynb" target="_blank">Google colab notebook dashboard</a></li>
 </ul>
 </div>
 </div>
@@ -219,6 +220,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Mengeksplorasi pola tren suhu dan curah hujan dengan grafik</li>
 <li>Memvisualisasikan pola suhu dan curah hujan secara spasial dengan peta</li>
 <li>Membuat peta bivariat untuk mengidentifikasi zona risiko iklim</li>
+<li>Membangun dashboard interaktif untuk menampilkan data iklim dan risiko iklim</li>
 </ol>
 <section id="sebelum-sesi-dimulai" class="level3">
 <h3 class="anchored" data-anchor-id="sebelum-sesi-dimulai">Sebelum sesi dimulai</h3>
@@ -302,8 +304,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="apa-itu-google-colab-sec-colab" class="level3">
-<h3 class="anchored" data-anchor-id="apa-itu-google-colab-sec-colab">Apa itu Google Colab? {sec-colab}</h3>
+<section id="sec-colab" class="level3">
+<h3 class="anchored" data-anchor-id="sec-colab">Apa itu Google Colab?</h3>
 <p>Google Colab (singkatan dari “Colaboratory”) alat bantu gratis, lingkungan notebook berbasis browser dimana Anda dapat menjalankan kode Python secara online tanpa instalasi rumit di desktop/komputer lokal.</p>
 <p>Colab dapat membantu dalam:</p>
 <ol type="1">
@@ -312,6 +314,27 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Kombinasi teks naratif, prompt, kode, dan gambar dalam satu tempat</li>
 <li>Simpan salinan Anda sendiri di Google Drive untuk latihan berkelanjutan</li>
 </ol>
+</section>
+<section id="apa-itu-shiny" class="level3">
+<h3 class="anchored" data-anchor-id="apa-itu-shiny">Apa itu Shiny?</h3>
+<p>Shiny adalah framework open-source untuk membangun aplikasi web interaktif dengan R atau Python. Shiny memungkinkan pengguna untuk membuat dashboard dan visualisasi data yang dinamis tanpa perlu pengetahuan mendalam tentang pengembangan web.</p>
+<p>Dalam proses hosting Shiny dashboard, diperlukan langkah-langkah pembuatan akun di shinyapps.io dan menginstall <code>rsconnect-python</code>. Berikut ini tahapan pembuatan akun:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="shiny1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="shiny1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></a></p>
+</figure>
+</div>
+<ol type="1">
+<li>Kunjungi <a href="https://www.shinyapps.io/" target="_blank">shinyapps.io</a> dan klik “Sign Up” untuk membuat akun baru.</li>
+<li>Isi formulir pendaftaran dengan informasi yang diperlukan, seperti nama, email, dan password.</li>
+<li>Setelah mendaftar, pilih nama domain unik untuk Shiny Apps yang diinginkan. Kemudian Save.</li>
+<li>Akun siap digunakan dan dikustomisasi untuk hosting aplikasi Shiny.</li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="shiny2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="shiny2.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%"></a></p>
+</figure>
+</div>
 <div class="callout callout-style-default callout-tip callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -356,6 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://pandas.pydata.org/docs/" target="_blank">Pandas documentation</a></li>
 <li><a href="https://matplotlib.org/stable/users/index.html" target="_blank">Matplotlib documentation</a></li>
 <li><a href="https://geopandas.org/en/stable/docs.html" target="_blank">Geopandas documentation</a></li>
+<li><a href="https://shiny.posit.co/py/gallery/" target="_blank">Shiny gallery</a></li>
 </ul>
 </section>
 <section id="cara-menggunakan-notebook" class="level3">
