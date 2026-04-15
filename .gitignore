@@ -11,3 +11,4 @@ index_files
 *.ipynb_checkpoints
 pyshiny/data_
 data
+*.png
