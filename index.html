@@ -71,6 +71,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="index_files/libs/bootstrap/bootstrap.min.js"></script>
 <link href="index_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="index_files/libs/bootstrap/bootstrap-1fbf936f5d115924c956bdfb76a204f2.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="index_files/libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="index_files/libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="index_files/libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
 
 
 </head>
@@ -87,7 +90,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul class="collapse">
   <li><a href="#sebelum-sesi-dimulai" id="toc-sebelum-sesi-dimulai" class="nav-link" data-scroll-target="#sebelum-sesi-dimulai">Sebelum sesi dimulai</a></li>
   <li><a href="#apa-itu-kaggle" id="toc-apa-itu-kaggle" class="nav-link" data-scroll-target="#apa-itu-kaggle">Apa itu Kaggle?</a></li>
-  <li><a href="#apa-itu-google-colab" id="toc-apa-itu-google-colab" class="nav-link" data-scroll-target="#apa-itu-google-colab">Apa itu Google Colab?</a></li>
+  <li><a href="#apa-itu-google-colab-sec-colab" id="toc-apa-itu-google-colab-sec-colab" class="nav-link" data-scroll-target="#apa-itu-google-colab-sec-colab">Apa itu Google Colab? {sec-colab}</a></li>
   <li><a href="#troubleshooting" id="toc-troubleshooting" class="nav-link" data-scroll-target="#troubleshooting">Troubleshooting</a></li>
   <li><a href="#referensi" id="toc-referensi" class="nav-link" data-scroll-target="#referensi">Referensi</a></li>
   <li><a href="#cara-menggunakan-notebook" id="toc-cara-menggunakan-notebook" class="nav-link" data-scroll-target="#cara-menggunakan-notebook">Cara menggunakan notebook</a></li>
@@ -158,14 +161,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="infografis3.png" class="img-fluid figure-img"></p>
+<p><a href="infografis3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="AI for Climate Risk &amp; Adaptation Infografis"><img src="infografis3.png" class="img-fluid figure-img" alt="AI for Climate Risk &amp; Adaptation Infografis"></a></p>
 <figcaption>AI for Climate Risk &amp; Adaptation Infografis</figcaption>
 </figure>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout callout-style-default callout-note no-icon callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 <span class="screen-reader-only">Note</span>Tautan menggunakan Kaggle
@@ -178,15 +181,17 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </ul>
 </div>
 </div>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout callout-style-default callout-caution no-icon callout-titled">
+<div class="callout-header d-flex align-content-center collapsed" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
-<i class="callout-icon"></i>
+<i class="callout-icon no-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Note</span>Tautan menggunakan Google Colab (opsional)
+<span class="screen-reader-only">Caution</span>Tautan menggunakan Google Colab (opsional)
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <ul>
 <li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/climate_risk_adaptation_ai_skeleton.ipynb" target="_blank">Google colab notebook</a></li>
@@ -195,6 +200,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/climate_risk_adaptation_ai_final.ipynb" target="_blank">Contoh Google colab notebook final</a></li>
 <li><a href="https://colab.research.google.com/github/alfanugraha/climate-risk-adaptation/blob/main/dashboard_climate_ai_deployment.ipynb" target="_blank">Google colab notebook dashboard</a></li>
 </ul>
+</div>
 </div>
 </div>
 <p>Modul pelatihan di dalam analisis ini seluruhnya menggunakan <strong>Python</strong> di dalam notebook Google Colab, dengan pendekatan <strong>prompt-driven</strong> — di mana GenAI/LLM digunakan sebagai mitra pemrograman.</p>
@@ -208,7 +214,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="overview">Overview</h2>
 <p>Pada akhir sesi ini, peserta akan mampu:</p>
 <ol type="1">
-<li>Menggunakan Python di dalam KaggleGoogle Colab</li>
+<li>Menggunakan Python di dalam Kaggle atau Google Colab</li>
 <li>Membuka dan membaca data iklim ke dalam Google Colab</li>
 <li>Mengeksplorasi pola tren suhu dan curah hujan dengan grafik</li>
 <li>Memvisualisasikan pola suhu dan curah hujan secara spasial dengan peta</li>
@@ -217,7 +223,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="sebelum-sesi-dimulai" class="level3">
 <h3 class="anchored" data-anchor-id="sebelum-sesi-dimulai">Sebelum sesi dimulai</h3>
 <ol type="1">
-<li>Pastikan sudah membuat akun Kaggle atau Google untuk akses ke Google Colab.</li>
+<li>Pastikan sudah membuat akun Kaggle atau Google untuk akses ke Google Colab (lihat <a href="#sec-kaggle" class="quarto-xref">langkah menggunakan Kaggle&nbsp;1.2.1</a>).</li>
 <li>Buka notebook pada link di atas ke dalam lingkungan Kaggle.</li>
 <li>Download dataset pada cell notebook yang tersedia.</li>
 <li>Pastikan Python dapat mengimpor <code>numpy</code>, <code>pandas</code>, <code>geopandas</code>, <code>xarray</code>, <code>rioxarray</code>, <code>rasterio</code>, <code>matplotlib</code>.</li>
@@ -232,48 +238,72 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li>Membuat dan berbagi notebook interaktif dengan komunitas data science global</li>
 <li>Berpartisipasi dalam kompetisi data science untuk mengasah keterampilan analisis dan machine learning.</li>
 </ol>
-<section id="langkah-langkah-menggunakan-kaggle" class="level4">
-<h4 class="anchored" data-anchor-id="langkah-langkah-menggunakan-kaggle">Langkah-langkah menggunakan Kaggle</h4>
+<section id="sec-kaggle" class="level4">
+<h4 class="anchored" data-anchor-id="sec-kaggle">Langkah-langkah menggunakan Kaggle</h4>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide1.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide1.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="1. Akses Kaggle dan buat akun"><img src="Slide1.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="1. Akses Kaggle dan buat akun"></a></p>
+</figure>
+</div>
 <figcaption>1. Akses Kaggle dan buat akun</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide2.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide2.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="2. Register dan verifikasi dengan Email"><img src="Slide2.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="2. Register dan verifikasi dengan Email"></a></p>
+</figure>
+</div>
 <figcaption>2. Register dan verifikasi dengan Email</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide3.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide3.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="3. Verifikasi akun di Settings"><img src="Slide3.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="3. Verifikasi akun di Settings"></a></p>
+</figure>
+</div>
 <figcaption>3. Verifikasi akun di Settings</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide4.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide4.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="4. Tingkatkan verifikasi dengan untuk menggunakan berbagai fitur Kaggle"><img src="Slide4.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="4. Tingkatkan verifikasi dengan untuk menggunakan berbagai fitur Kaggle"></a></p>
+</figure>
+</div>
 <figcaption>4. Tingkatkan verifikasi dengan untuk menggunakan berbagai fitur Kaggle</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide5.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide5.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="5. Memulai penggunaan Kaggle dengan import notebook"><img src="Slide5.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="5. Memulai penggunaan Kaggle dengan import notebook"></a></p>
+</figure>
+</div>
 <figcaption>5. Memulai penggunaan Kaggle dengan import notebook</figcaption>
 </figure>
 </div>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="Slide6.PNG" class="img-fluid figure-img"></p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="Slide6.PNG" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="6. Antarmuka Kaggle"><img src="Slide6.PNG" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:80.0%" alt="6. Antarmuka Kaggle"></a></p>
+</figure>
+</div>
 <figcaption>6. Antarmuka Kaggle</figcaption>
 </figure>
 </div>
 </section>
 </section>
-<section id="apa-itu-google-colab" class="level3">
-<h3 class="anchored" data-anchor-id="apa-itu-google-colab">Apa itu Google Colab?</h3>
+<section id="apa-itu-google-colab-sec-colab" class="level3">
+<h3 class="anchored" data-anchor-id="apa-itu-google-colab-sec-colab">Apa itu Google Colab? {sec-colab}</h3>
 <p>Google Colab (singkatan dari “Colaboratory”) alat bantu gratis, lingkungan notebook berbasis browser dimana Anda dapat menjalankan kode Python secara online tanpa instalasi rumit di desktop/komputer lokal.</p>
 <p>Colab dapat membantu dalam:</p>
 <ol type="1">
@@ -322,10 +352,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="referensi" class="level3">
 <h3 class="anchored" data-anchor-id="referensi">Referensi</h3>
 <ul>
-<li><a href="https://numpy.org/doc/">NumPy documentation</a></li>
-<li><a href="https://pandas.pydata.org/docs/">Pandas documentation</a></li>
-<li><a href="https://matplotlib.org/stable/users/index.html">Matplotlib documentation</a></li>
-<li><a href="https://geopandas.org/en/stable/docs.html">Geopandas documentation</a></li>
+<li><a href="https://numpy.org/doc/" target="_blank">NumPy documentation</a></li>
+<li><a href="https://pandas.pydata.org/docs/" target="_blank">Pandas documentation</a></li>
+<li><a href="https://matplotlib.org/stable/users/index.html" target="_blank">Matplotlib documentation</a></li>
+<li><a href="https://geopandas.org/en/stable/docs.html" target="_blank">Geopandas documentation</a></li>
 </ul>
 </section>
 <section id="cara-menggunakan-notebook" class="level3">
@@ -1095,6 +1125,38 @@ Plot peta rata-rata suhu tahunan secara keseluruhan</code></pre>
   });
   </script>
 </div> <!-- /content -->
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
 
 
 
