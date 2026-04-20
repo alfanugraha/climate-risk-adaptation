@@ -179,6 +179,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><a href="https://raw.githubusercontent.com/alfanugraha/climate-risk-adaptation/refs/heads/main/colab/climate_risk_adaptation_ai_skeleton.ipynb" target="_blank">Notebook untuk hands on</a></li>
 <li><a href="https://raw.githubusercontent.com/alfanugraha/climate-risk-adaptation/refs/heads/main/colab/dashboard_climate_ai_deployment.ipynb" target="_blank">Notebook untuk dashboard</a></li>
+<li><a href="https://www.kaggle.com/code/alfanugraha/notebook-final" target="_blank">Notebook final</a></li>
 </ul>
 </div>
 </div>
@@ -386,7 +387,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="cara-menggunakan-notebook">Cara menggunakan notebook</h3>
 <p>Masing-masing section berisi:</p>
 <ol type="1">
-<li><strong>LLM prompt</strong> (Markdown) untuk di-copy ke LLM platform yang akan digunakan</li>
+<li><strong>AI prompt</strong> (Markdown) untuk di-copy ke AI platform yang akan digunakan</li>
 <li><strong>starter code cell</strong> (TODOs) untuk mengeksekusi perintah di Colab</li>
 </ol>
 <div class="callout callout-style-default callout-important callout-titled">
@@ -399,7 +400,7 @@ Important
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><strong>Rule of thumb:</strong> Ajukan selalu <strong>plots + sanity checks</strong> saat meminta bantuan pada LLM.</p>
+<p><strong>Aturan praktis:</strong> Selalu minta AI untuk <strong>membuatkan grafik dan mengecek ulang datanya</strong>.</p>
 </div>
 </div>
 </section>
@@ -426,11 +427,14 @@ Important
 </section>
 <section id="persiapan-data" class="level2">
 <h2 class="anchored" data-anchor-id="persiapan-data">Persiapan Data</h2>
-<section id="chatgpt-prompt-copypaste" class="level4">
-<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste">ChatGPT Prompt (copy/paste)</h4>
+<section id="prompt-opsional" class="level4">
+<h4 class="anchored" data-anchor-id="prompt-opsional">Prompt (opsional)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tulis sebuah cell kode python yang siap digunakan di Colab: buat folder data</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download data di <span class="co">[</span><span class="ot">/path/to/folder</span><span class="co">]</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Tulis sebuah cell kode python yang siap digunakan di Colab: buat folder "data"</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Download zip file dari id berikut dan unzip ke folder "data":</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Batas provinsi dengan id 1Q-eLMTysb9J_xa0LVg3TN76G45AQTRI0, folder "batas_provinsi"</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Batas kabupaten/kota dengan id 18rELsvN_SXuqZ-BFRs6eRREkeYIXSEDY, folder "batas_kabupaten"</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="ss">   - </span>Data iklim TerraClimate dengan id 1TTJ212rFfpZl6Qnbrj2zkIE7PVthGEiY, folder "iklim"</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="peta-batas-provinsi-di-indonesia" class="level3">
 <h3 class="anchored" data-anchor-id="peta-batas-provinsi-di-indonesia">Peta Batas Provinsi di Indonesia</h3>
@@ -448,8 +452,8 @@ Important
 <section id="sec-explore" class="level2">
 <h2 class="anchored" data-anchor-id="sec-explore">Eksplorasi Data</h2>
 <p>Load dataset yang sudah diunduh dan lakukan analisis data sederhana</p>
-<section id="chatgpt-prompt-copypaste-1" class="level4">
-<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-1">ChatGPT Prompt (copy/paste)</h4>
+<section id="chatgpt-prompt-copypaste" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Load batas wilayah administrasi Indonesia menggunakan shapefile di path</span>
@@ -468,11 +472,11 @@ Important
 </section>
 <section id="data-suhu" class="level3">
 <h3 class="anchored" data-anchor-id="data-suhu">Data suhu</h3>
-<section id="chatgpt-prompt-copypaste-2" class="level4">
-<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-2">ChatGPT Prompt (copy/paste)</h4>
+<section id="chatgpt-prompt-copypaste-1" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-1">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk suhu maksimum (tmax) dan minumum (tmin) di path /content/iklim</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk suhu maksimum (tmax) dan minumum (tmin) di path data/iklim</span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Hitung suhu rata-rata bulanan</span>
 <span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Gunakan batas wilayah Indonesia sebagai referensi jika diperlukan</span>
 <span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Hitung rata-rata suhu tahunan</span>
@@ -488,11 +492,11 @@ Plot peta rata-rata suhu tahunan secara keseluruhan</code></pre>
 </section>
 <section id="data-curah-hujan" class="level3">
 <h3 class="anchored" data-anchor-id="data-curah-hujan">Data curah hujan</h3>
-<section id="chatgpt-prompt-copypaste-3" class="level4">
-<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-3">ChatGPT Prompt (copy/paste)</h4>
+<section id="chatgpt-prompt-copypaste-2" class="level4">
+<h4 class="anchored" data-anchor-id="chatgpt-prompt-copypaste-2">ChatGPT Prompt (copy/paste)</h4>
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="an">Task:</span></span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="an">Tulis kode python untuk:</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk curah hujan (ppt) di path /content/iklim</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Baca multi-file NetCDF untuk curah hujan (ppt) di path data/iklim</span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Clip ke wilayah Indonesia menggunakan gdf_adm0</span>
 <span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Hitung total curah hujan tahunan (sum per tahun, bukan mean)</span>
 <span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Buat grafik tren curah hujan tahunan</span>
